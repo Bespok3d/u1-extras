@@ -26,7 +26,7 @@
       ],
       "conflicts": [],
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/klipper-hooks/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442918197",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442923985",
       "changelog_url": "klipper-hooks/doc/CHANGELOG.md",
       "deps": []
     },
@@ -52,7 +52,7 @@
       ],
       "conflicts": [],
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/moonraker-notify/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442918219",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442923993",
       "min_daemon_version": "0.10.33-dev",
       "config": [
         {
@@ -110,7 +110,7 @@
       ],
       "conflicts": [],
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/prometheus-exporter/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442918244",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442924005",
       "min_daemon_version": "0.10.33-dev",
       "homepage": "https://github.com/scross01/prometheus-klipper-exporter",
       "changelog_url": "prometheus-exporter/doc/CHANGELOG.md",
@@ -120,6 +120,33 @@
           "path": ":9101/metrics"
         }
       ],
+      "deps": []
+    },
+    {
+      "name": "system-utils",
+      "title": "System Utilities (curl, rsync)",
+      "version": "0.1.0",
+      "description": "Installs static arm64 builds of curl and rsync into $BESPOK3D/bin so they are available on the printer (stock Snapmaker firmware ships neither). Handy for shell scripting, backups, and transfers over SSH. Bespok3d itself does not need these (it talks to Moonraker over HTTP and uses SFTP); this is purely a convenience for users who want the tools. The binaries are fetched from their upstream static-build releases (SHA-pinned) and baked into the package; nothing is compiled or downloaded on the printer. Experimental, not yet verified on a physical printer.",
+      "tagline": "Static curl and rsync on the printer (stock firmware has neither).",
+      "category": "system",
+      "channel": "experiment",
+      "publisher": "PLACEHOLDER",
+      "printer_specific": false,
+      "published_at": "2026-06-09",
+      "updated_at": "2026-06-09",
+      "requires": {
+        "capabilities": [
+          "klipper-generic"
+        ]
+      },
+      "provides": [
+        "system-utils"
+      ],
+      "conflicts": [],
+      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/system-utils/doc/README.md",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442924036",
+      "min_daemon_version": "0.10.34-dev",
+      "changelog_url": "system-utils/doc/CHANGELOG.md",
       "deps": []
     },
     {
@@ -144,7 +171,7 @@
       ],
       "conflicts": [],
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/wled/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442918254",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442924054",
       "config": [
         {
           "key": "WLED_NAME",
