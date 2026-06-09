@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "name": "U1 Extras",
+  "publisher": "PLACEHOLDER",
+  "updated": "2026-06-09",
+  "plugins": [
+    {
+      "name": "klipper-hooks",
+      "title": "Print Lifecycle Hooks",
+      "version": "0.1.0",
+      "description": "Lets any macro named _PRINT_START_*, _PRINT_END_*, or _CANCEL_PRINT_* run automatically as part of PRINT_START / PRINT_END / CANCEL_PRINT, without editing those core macros. Drop a [gcode_macro _PRINT_START_my_thing] in your config and it just runs. Hooks are run in sorted name order, so prefix them with a number (e.g. _PRINT_START_10_purge, _PRINT_START_20_level) to control sequencing. DANGER: if two hooks must run in a specific order and you do not number them, the order is only as stable as their names; an unordered hook that depends on another can misfire. Experimental and not yet verified on a physical printer; it overrides PRINT_START/PRINT_END/CANCEL_PRINT, so it can conflict with other plugins that override the same macros.",
+      "tagline": "Auto-run _PRINT_START_* / _PRINT_END_* hooks. Number them to order them.",
+      "category": "printing",
+      "channel": "experiment",
+      "publisher": "PLACEHOLDER",
+      "printer_specific": false,
+      "published_at": "2026-06-09",
+      "updated_at": "2026-06-09",
+      "requires": {
+        "capabilities": [
+          "klipper-generic"
+        ]
+      },
+      "provides": [
+        "print-hooks"
+      ],
+      "conflicts": [],
+      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/klipper-hooks/doc/README.md",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442900384",
+      "changelog_url": "klipper-hooks/doc/CHANGELOG.md",
+      "deps": []
+    },
+    {
+      "name": "moonraker-notify",
+      "title": "Print Notifications",
+      "version": "0.1.0",
+      "description": "Sends a push notification when a print finishes, fails, or errors, using Moonraker's [notifier] and the Apprise library. Apprise speaks to about a hundred services from one address: Telegram, Discord, Slack, ntfy, Pushover, email, Matrix, Home Assistant, and more. Paste the Apprise URL for your service (e.g. ntfy://ntfy.sh/your-topic or tgram://bottoken/chatid) and pick which events to be told about. The Apprise library is baked into the package and linked into Moonraker's interpreter at install; no pip ever runs on the printer.",
+      "tagline": "Get a ping on your phone or chat when a print finishes or fails.",
+      "category": "system",
+      "channel": "stable",
+      "publisher": "PLACEHOLDER",
+      "printer_specific": false,
+      "published_at": "2026-06-09",
+      "updated_at": "2026-06-09",
+      "requires": {
+        "capabilities": [
+          "klipper-generic"
+        ]
+      },
+      "provides": [
+        "moonraker-notify"
+      ],
+      "conflicts": [],
+      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/moonraker-notify/doc/README.md",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442900405",
+      "min_daemon_version": "0.10.33-dev",
+      "config": [
+        {
+          "key": "NOTIFY_NAME",
+          "label": "Notifier name",
+          "type": "text",
+          "default": "phone",
+          "hint": "A label for this destination; you can install more than one.",
+          "userEditable": true
+        },
+        {
+          "key": "APPRISE_URL",
+          "label": "Apprise URL",
+          "type": "text",
+          "default": "ntfy://ntfy.sh/your-topic",
+          "hint": "Your service's Apprise URL. See github.com/caronc/apprise for the format per service.",
+          "userEditable": true
+        },
+        {
+          "key": "NOTIFY_EVENTS",
+          "label": "Notify on",
+          "type": "select",
+          "options": [
+            "complete,error,cancelled",
+            "error,cancelled",
+            "*"
+          ],
+          "default": "complete,error,cancelled",
+          "hint": "Which print events trigger a notification.",
+          "userEditable": true
+        }
+      ],
+      "changelog_url": "moonraker-notify/doc/CHANGELOG.md",
+      "deps": []
+    },
+    {
+      "name": "panda-breath",
+      "title": "Panda Breath",
+      "version": "0.1.0",
+      "description": "Drives a BIQU Panda Breath chamber-heating device as a standard Klipper heater. Adds a Klipper extra (panda_breath.py) that talks to the Panda Breath over its OEM WebSocket protocol, plus a [heater_generic] so you control chamber heat from the web UI and slicer like any other heater. Point it at your Panda Breath's host. The Panda Breath hardware is separate. Experimental: not yet verified on a physical device.",
+      "tagline": "Chamber heating with a BIQU Panda Breath, as a Klipper heater.",
+      "category": "sensors",
+      "channel": "experiment",
+      "publisher": "PLACEHOLDER",
+      "printer_specific": false,
+      "published_at": "2026-06-09",
+      "updated_at": "2026-06-09",
+      "requires": {
+        "capabilities": [
+          "klipper-generic"
+        ]
+      },
+      "provides": [
+        "panda-breath"
+      ],
+      "conflicts": [],
+      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/panda-breath/doc/README.md",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442900418",
+      "homepage": "https://github.com/justinh-rahb/pandabreath-klipper",
+      "config": [
+        {
+          "key": "PANDA_HOST",
+          "label": "Panda Breath host",
+          "type": "text",
+          "default": "PandaBreath.local",
+          "hint": "Hostname or IP of the Panda Breath. If .local does not resolve, use the IP.",
+          "userEditable": true
+        },
+        {
+          "key": "PANDA_PORT",
+          "label": "Port",
+          "type": "number",
+          "default": "80",
+          "userEditable": true
+        }
+      ],
+      "changelog_url": "panda-breath/doc/CHANGELOG.md",
+      "deps": []
+    },
+    {
+      "name": "wled",
+      "title": "WLED Status Lights",
+      "version": "0.1.0",
+      "description": "Connects a network-attached WLED LED strip to Moonraker's built-in [wled] support, so your printer can drive status lighting (and you can control it from Fluidd/Mainsail and from macros). Point it at your WLED device's address and set how many LEDs it has. WLED hardware is separate; this only configures Moonraker to talk to it.",
+      "tagline": "Drive a WLED LED strip from your printer.",
+      "category": "system",
+      "channel": "stable",
+      "publisher": "PLACEHOLDER",
+      "printer_specific": false,
+      "published_at": "2026-06-09",
+      "updated_at": "2026-06-09",
+      "requires": {
+        "capabilities": [
+          "klipper-generic"
+        ]
+      },
+      "provides": [
+        "wled"
+      ],
+      "conflicts": [],
+      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/wled/doc/README.md",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442900438",
+      "config": [
+        {
+          "key": "WLED_NAME",
+          "label": "Strip name",
+          "type": "text",
+          "default": "status",
+          "hint": "Name used in macros and the UI, e.g. WLED_ON STRIP=status.",
+          "userEditable": true
+        },
+        {
+          "key": "WLED_ADDRESS",
+          "label": "WLED address",
+          "type": "text",
+          "default": "wled.local",
+          "hint": "Hostname or IP of your WLED device.",
+          "userEditable": true
+        },
+        {
+          "key": "WLED_CHAIN_COUNT",
+          "label": "LED count",
+          "type": "number",
+          "default": "30",
+          "hint": "Number of LEDs on the strip.",
+          "userEditable": true
+        },
+        {
+          "key": "WLED_COLOR_ORDER",
+          "label": "Color order",
+          "type": "select",
+          "options": [
+            "GRB",
+            "RGB",
+            "RGBW",
+            "GRBW"
+          ],
+          "default": "GRB",
+          "userEditable": true
+        }
+      ],
+      "changelog_url": "wled/doc/CHANGELOG.md",
+      "deps": []
+    }
+  ],
+  "lists": []
+}
