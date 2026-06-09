@@ -1,0 +1,81 @@
+{
+  "name": "moonraker-notify",
+  "title": "Print Notifications",
+  "version": "0.1.0",
+  "min_daemon_version": "0.10.33-dev",
+  "description": "Sends a push notification when a print finishes, fails, or errors, using Moonraker's [notifier] and the Apprise library. Apprise speaks to about a hundred services from one address: Telegram, Discord, Slack, ntfy, Pushover, email, Matrix, Home Assistant, and more. Paste the Apprise URL for your service (e.g. ntfy://ntfy.sh/your-topic or tgram://bottoken/chatid) and pick which events to be told about. The Apprise library is baked into the package and linked into Moonraker's interpreter at install; no pip ever runs on the printer.",
+  "tagline": "Get a ping on your phone or chat when a print finishes or fails.",
+  "category": "system",
+  "channel": "stable",
+  "printer_specific": false,
+  "changelog": "doc/CHANGELOG.md",
+  "published_at": "2026-06-09",
+  "updated_at": "2026-06-09",
+  "source": "https://github.com/Bespok3d/u1-extras",
+  "publisher": "PLACEHOLDER",
+  "provides": [
+    {
+      "service": "moonraker-notify"
+    }
+  ],
+  "require": [],
+  "conflicts": [],
+  "requires": {
+    "capabilities": [
+      "klipper-generic"
+    ],
+    "variables": [
+      {
+        "name": "APPRISE_URL",
+        "description": "Apprise URL for your notification service (e.g. ntfy://ntfy.sh/your-topic)",
+        "required": true
+      }
+    ]
+  },
+  "config": [
+    {
+      "key": "NOTIFY_NAME",
+      "label": "Notifier name",
+      "type": "text",
+      "default": "phone",
+      "hint": "A label for this destination; you can install more than one.",
+      "userEditable": true
+    },
+    {
+      "key": "APPRISE_URL",
+      "label": "Apprise URL",
+      "type": "text",
+      "default": "ntfy://ntfy.sh/your-topic",
+      "hint": "Your service's Apprise URL. See github.com/caronc/apprise for the format per service.",
+      "userEditable": true
+    },
+    {
+      "key": "NOTIFY_EVENTS",
+      "label": "Notify on",
+      "type": "select",
+      "options": ["complete,error,cancelled", "error,cancelled", "*"],
+      "default": "complete,error,cancelled",
+      "hint": "Which print events trigger a notification.",
+      "userEditable": true
+    }
+  ],
+  "permissions": [
+    "moonraker-config",
+    "restart"
+  ],
+  "install": {
+    "place": [
+      {
+        "class": "moonraker-config",
+        "src": "files/cfg/moonraker/moonraker-notify.cfg.tmpl",
+        "name": "moonraker-notify.cfg",
+        "render": true
+      }
+    ],
+    "restart": [
+      "moonraker"
+    ]
+  },
+  "conflict_resolutions": [],
+  "files": []
+}

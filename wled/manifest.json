@@ -1,0 +1,87 @@
+{
+  "name": "wled",
+  "title": "WLED Status Lights",
+  "version": "0.1.0",
+  "description": "Connects a network-attached WLED LED strip to Moonraker's built-in [wled] support, so your printer can drive status lighting (and you can control it from Fluidd/Mainsail and from macros). Point it at your WLED device's address and set how many LEDs it has. WLED hardware is separate; this only configures Moonraker to talk to it.",
+  "tagline": "Drive a WLED LED strip from your printer.",
+  "category": "system",
+  "channel": "stable",
+  "printer_specific": false,
+  "changelog": "doc/CHANGELOG.md",
+  "published_at": "2026-06-09",
+  "updated_at": "2026-06-09",
+  "source": "https://github.com/Bespok3d/u1-extras",
+  "publisher": "PLACEHOLDER",
+  "provides": [
+    {
+      "service": "wled"
+    }
+  ],
+  "require": [],
+  "conflicts": [],
+  "requires": {
+    "capabilities": [
+      "klipper-generic"
+    ],
+    "variables": [
+      {
+        "name": "WLED_ADDRESS",
+        "description": "Hostname or IP of the WLED device (e.g. wled.local or 192.168.1.50)",
+        "required": true
+      }
+    ]
+  },
+  "config": [
+    {
+      "key": "WLED_NAME",
+      "label": "Strip name",
+      "type": "text",
+      "default": "status",
+      "hint": "Name used in macros and the UI, e.g. WLED_ON STRIP=status.",
+      "userEditable": true
+    },
+    {
+      "key": "WLED_ADDRESS",
+      "label": "WLED address",
+      "type": "text",
+      "default": "wled.local",
+      "hint": "Hostname or IP of your WLED device.",
+      "userEditable": true
+    },
+    {
+      "key": "WLED_CHAIN_COUNT",
+      "label": "LED count",
+      "type": "number",
+      "default": "30",
+      "hint": "Number of LEDs on the strip.",
+      "userEditable": true
+    },
+    {
+      "key": "WLED_COLOR_ORDER",
+      "label": "Color order",
+      "type": "select",
+      "options": ["GRB", "RGB", "RGBW", "GRBW"],
+      "default": "GRB",
+      "userEditable": true
+    }
+  ],
+  "permissions": [
+    "moonraker-config",
+    "restart"
+  ],
+  "install": {
+    "place": [
+      {
+        "class": "moonraker-config",
+        "src": "files/cfg/moonraker/wled.cfg.tmpl",
+        "name": "wled.cfg",
+        "render": true
+      }
+    ],
+    "restart": [
+      "moonraker"
+    ]
+  },
+  "conflict_resolutions": [],
+  "files": []
+}
