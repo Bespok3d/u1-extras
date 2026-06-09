@@ -26,7 +26,7 @@
       ],
       "conflicts": [],
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/klipper-hooks/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442900384",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442918197",
       "changelog_url": "klipper-hooks/doc/CHANGELOG.md",
       "deps": []
     },
@@ -37,7 +37,7 @@
       "description": "Sends a push notification when a print finishes, fails, or errors, using Moonraker's [notifier] and the Apprise library. Apprise speaks to about a hundred services from one address: Telegram, Discord, Slack, ntfy, Pushover, email, Matrix, Home Assistant, and more. Paste the Apprise URL for your service (e.g. ntfy://ntfy.sh/your-topic or tgram://bottoken/chatid) and pick which events to be told about. The Apprise library is baked into the package and linked into Moonraker's interpreter at install; no pip ever runs on the printer.",
       "tagline": "Get a ping on your phone or chat when a print finishes or fails.",
       "category": "system",
-      "channel": "stable",
+      "channel": "experiment",
       "publisher": "PLACEHOLDER",
       "printer_specific": false,
       "published_at": "2026-06-09",
@@ -52,7 +52,7 @@
       ],
       "conflicts": [],
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/moonraker-notify/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442900405",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442918219",
       "min_daemon_version": "0.10.33-dev",
       "config": [
         {
@@ -89,12 +89,12 @@
       "deps": []
     },
     {
-      "name": "panda-breath",
-      "title": "Panda Breath",
+      "name": "prometheus-exporter",
+      "title": "Prometheus Exporter",
       "version": "0.1.0",
-      "description": "Drives a BIQU Panda Breath chamber-heating device as a standard Klipper heater. Adds a Klipper extra (panda_breath.py) that talks to the Panda Breath over its OEM WebSocket protocol, plus a [heater_generic] so you control chamber heat from the web UI and slicer like any other heater. Point it at your Panda Breath's host. The Panda Breath hardware is separate. Experimental: not yet verified on a physical device.",
-      "tagline": "Chamber heating with a BIQU Panda Breath, as a Klipper heater.",
-      "category": "sensors",
+      "description": "Runs scross01/prometheus-klipper-exporter as a managed service, exposing Klipper/Moonraker metrics in Prometheus format at :9101/metrics so you can scrape them into Prometheus, Grafana, Datadog, etc. The exporter is a small Go binary cross-compiled for the printer in CI and baked into the package; nothing is built on the printer. Observability for people who run a metrics stack; most users will not need it. Experimental, not yet verified on a physical printer.",
+      "tagline": "Klipper/Moonraker metrics in Prometheus format for Grafana & co.",
+      "category": "system",
       "channel": "experiment",
       "publisher": "PLACEHOLDER",
       "printer_specific": false,
@@ -106,30 +106,20 @@
         ]
       },
       "provides": [
-        "panda-breath"
+        "prometheus-exporter"
       ],
       "conflicts": [],
-      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/panda-breath/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442900418",
-      "homepage": "https://github.com/justinh-rahb/pandabreath-klipper",
-      "config": [
+      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/prometheus-exporter/doc/README.md",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442918244",
+      "min_daemon_version": "0.10.33-dev",
+      "homepage": "https://github.com/scross01/prometheus-klipper-exporter",
+      "changelog_url": "prometheus-exporter/doc/CHANGELOG.md",
+      "endpoints": [
         {
-          "key": "PANDA_HOST",
-          "label": "Panda Breath host",
-          "type": "text",
-          "default": "PandaBreath.local",
-          "hint": "Hostname or IP of the Panda Breath. If .local does not resolve, use the IP.",
-          "userEditable": true
-        },
-        {
-          "key": "PANDA_PORT",
-          "label": "Port",
-          "type": "number",
-          "default": "80",
-          "userEditable": true
+          "label": "Metrics",
+          "path": ":9101/metrics"
         }
       ],
-      "changelog_url": "panda-breath/doc/CHANGELOG.md",
       "deps": []
     },
     {
@@ -139,7 +129,7 @@
       "description": "Connects a network-attached WLED LED strip to Moonraker's built-in [wled] support, so your printer can drive status lighting (and you can control it from Fluidd/Mainsail and from macros). Point it at your WLED device's address and set how many LEDs it has. WLED hardware is separate; this only configures Moonraker to talk to it.",
       "tagline": "Drive a WLED LED strip from your printer.",
       "category": "system",
-      "channel": "stable",
+      "channel": "experiment",
       "publisher": "PLACEHOLDER",
       "printer_specific": false,
       "published_at": "2026-06-09",
@@ -154,7 +144,7 @@
       ],
       "conflicts": [],
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/wled/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442900438",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442918254",
       "config": [
         {
           "key": "WLED_NAME",
