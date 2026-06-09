@@ -34,6 +34,13 @@ jobs:
         with:
           python-version: '3.11'
 
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Build each plugin's native binaries into its files (a plugin that needs one ships build.sh)
+        run: 'for dir in */; do [ -f "${dir}build.sh" ] && sh "${dir}build.sh"; done; true'
+
       - name: Bake each plugin's Python deps into its files (ADR-0036)
         run: sh scripts/bake-deps.sh
 

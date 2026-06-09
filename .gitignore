@@ -5,3 +5,4 @@ __pycache__/
 *.pyc
 */files/site-packages/
 */files/wheels/
+*/files/bin/

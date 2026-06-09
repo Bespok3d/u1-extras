@@ -5,7 +5,7 @@
   "description": "Connects a network-attached WLED LED strip to Moonraker's built-in [wled] support, so your printer can drive status lighting (and you can control it from Fluidd/Mainsail and from macros). Point it at your WLED device's address and set how many LEDs it has. WLED hardware is separate; this only configures Moonraker to talk to it.",
   "tagline": "Drive a WLED LED strip from your printer.",
   "category": "system",
-  "channel": "stable",
+  "channel": "experiment",
   "printer_specific": false,
   "changelog": "doc/CHANGELOG.md",
   "published_at": "2026-06-09",
