@@ -26,7 +26,7 @@
       ],
       "conflicts": [],
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/klipper-hooks/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442923985",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/444830844",
       "changelog_url": "klipper-hooks/doc/CHANGELOG.md",
       "deps": []
     },
@@ -37,7 +37,7 @@
       "description": "Sends a push notification when a print finishes, fails, or errors, using Moonraker's [notifier] and the Apprise library. Apprise speaks to about a hundred services from one address: Telegram, Discord, Slack, ntfy, Pushover, email, Matrix, Home Assistant, and more. Paste the Apprise URL for your service (e.g. ntfy://ntfy.sh/your-topic or tgram://bottoken/chatid) and pick which events to be told about. The Apprise library is baked into the package and linked into Moonraker's interpreter at install; no pip ever runs on the printer.",
       "tagline": "Get a ping on your phone or chat when a print finishes or fails.",
       "category": "system",
-      "channel": "experiment",
+      "channel": "stable",
       "publisher": "PLACEHOLDER",
       "printer_specific": false,
       "published_at": "2026-06-09",
@@ -52,7 +52,7 @@
       ],
       "conflicts": [],
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/moonraker-notify/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442923993",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/444830891",
       "min_daemon_version": "0.10.33-dev",
       "config": [
         {
@@ -95,7 +95,7 @@
       "description": "Runs scross01/prometheus-klipper-exporter as a managed service, exposing Klipper/Moonraker metrics in Prometheus format at :9101/metrics so you can scrape them into Prometheus, Grafana, Datadog, etc. The exporter is a small Go binary cross-compiled for the printer in CI and baked into the package; nothing is built on the printer. Observability for people who run a metrics stack; most users will not need it. Experimental, not yet verified on a physical printer.",
       "tagline": "Klipper/Moonraker metrics in Prometheus format for Grafana & co.",
       "category": "system",
-      "channel": "experiment",
+      "channel": "stable",
       "publisher": "PLACEHOLDER",
       "printer_specific": false,
       "published_at": "2026-06-09",
@@ -110,7 +110,7 @@
       ],
       "conflicts": [],
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/prometheus-exporter/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442924005",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/444830960",
       "min_daemon_version": "0.10.33-dev",
       "homepage": "https://github.com/scross01/prometheus-klipper-exporter",
       "changelog_url": "prometheus-exporter/doc/CHANGELOG.md",
@@ -129,7 +129,7 @@
       "description": "Installs static arm64 builds of curl and rsync into $BESPOK3D/bin so they are available on the printer (stock Snapmaker firmware ships neither). Handy for shell scripting, backups, and transfers over SSH. Bespok3d itself does not need these (it talks to Moonraker over HTTP and uses SFTP); this is purely a convenience for users who want the tools. The binaries are fetched from their upstream static-build releases (SHA-pinned) and baked into the package; nothing is compiled or downloaded on the printer. Experimental, not yet verified on a physical printer.",
       "tagline": "Static curl and rsync on the printer (stock firmware has neither).",
       "category": "system",
-      "channel": "experiment",
+      "channel": "stable",
       "publisher": "PLACEHOLDER",
       "printer_specific": false,
       "published_at": "2026-06-09",
@@ -144,7 +144,7 @@
       ],
       "conflicts": [],
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/system-utils/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442924036",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/444831006",
       "min_daemon_version": "0.10.34-dev",
       "changelog_url": "system-utils/doc/CHANGELOG.md",
       "deps": []
@@ -171,7 +171,7 @@
       ],
       "conflicts": [],
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/wled/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/442924054",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/444831055",
       "config": [
         {
           "key": "WLED_NAME",
