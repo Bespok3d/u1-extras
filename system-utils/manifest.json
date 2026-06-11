@@ -6,7 +6,7 @@
   "description": "Installs static arm64 builds of curl and rsync into $BESPOK3D/bin so they are available on the printer (stock Snapmaker firmware ships neither). Handy for shell scripting, backups, and transfers over SSH. Bespok3d itself does not need these (it talks to Moonraker over HTTP and uses SFTP); this is purely a convenience for users who want the tools. The binaries are fetched from their upstream static-build releases (SHA-pinned) and baked into the package; nothing is compiled or downloaded on the printer. Experimental, not yet verified on a physical printer.",
   "tagline": "Static curl and rsync on the printer (stock firmware has neither).",
   "category": "system",
-  "channel": "experiment",
+  "channel": "stable",
   "printer_specific": false,
   "changelog": "doc/CHANGELOG.md",
   "published_at": "2026-06-09",
@@ -21,14 +21,10 @@
   "require": [],
   "conflicts": [],
   "requires": {
-    "capabilities": [
-      "klipper-generic"
-    ],
+    "capabilities": ["klipper-generic"],
     "variables": []
   },
-  "permissions": [
-    "system-bin"
-  ],
+  "permissions": ["system-bin"],
   "install": {
     "place": [
       {

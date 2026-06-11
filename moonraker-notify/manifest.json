@@ -6,7 +6,7 @@
   "description": "Sends a push notification when a print finishes, fails, or errors, using Moonraker's [notifier] and the Apprise library. Apprise speaks to about a hundred services from one address: Telegram, Discord, Slack, ntfy, Pushover, email, Matrix, Home Assistant, and more. Paste the Apprise URL for your service (e.g. ntfy://ntfy.sh/your-topic or tgram://bottoken/chatid) and pick which events to be told about. The Apprise library is baked into the package and linked into Moonraker's interpreter at install; no pip ever runs on the printer.",
   "tagline": "Get a ping on your phone or chat when a print finishes or fails.",
   "category": "system",
-  "channel": "experiment",
+  "channel": "stable",
   "printer_specific": false,
   "changelog": "doc/CHANGELOG.md",
   "published_at": "2026-06-09",
@@ -21,9 +21,7 @@
   "require": [],
   "conflicts": [],
   "requires": {
-    "capabilities": [
-      "klipper-generic"
-    ],
+    "capabilities": ["klipper-generic"],
     "variables": [
       {
         "name": "APPRISE_URL",
@@ -59,10 +57,7 @@
       "userEditable": true
     }
   ],
-  "permissions": [
-    "moonraker-config",
-    "restart"
-  ],
+  "permissions": ["moonraker-config", "restart"],
   "install": {
     "place": [
       {
@@ -72,9 +67,7 @@
         "render": true
       }
     ],
-    "restart": [
-      "moonraker"
-    ]
+    "restart": ["moonraker"]
   },
   "conflict_resolutions": [],
   "files": []
