@@ -1,17 +1,20 @@
 # u1-extras
 
 A co-repo of optional Bespok3d add-ons for the Snapmaker U1 (and Klipper printers), each installable
-on its own from the store. A grab-bag of server-side extras ported from the extended firmware: LED
-control, push notifications, monitoring, cloud access, and handy system utilities.
+on its own from the store. A grab-bag of server-side extras and small U1 niceties: LED control, push
+notifications, monitoring, handy system utilities, and G-code preview polish.
 
 Plugins:
 
 - **wled** - Drive WLED status LEDs from Moonraker's built-in `[wled]` (network-attached strips).
 - **moonraker-notify** - Push print events (done / failed / error) to your phone or chat via Apprise.
-- **panda-breath** - Connect a Panda Breath chamber-heating device (experimental).
+- **klipper-hooks** - Prefix-named lifecycle hooks that run in sorted order.
+- **prometheus-exporter** - A Prometheus metrics exporter (CI-built binary).
+- **system-utils** - Static arm64 CLI utilities (curl, rsync).
+- **u1-gcode-colors** - Color Fluidd's G-code preview by the filament actually loaded on each tool's extruder (U1-only).
 
-(Build-heavier add-ons - a Prometheus exporter, OctoEverywhere cloud, and static CLI utilities - land
-in this same list as their build pipelines come online.)
+(panda-breath and OctoEverywhere have moved to their own repos: `plugins/panda-breath-plugin` and
+`plugins/octoeverywhere-plugin`.)
 
 ## Layout
 

@@ -1,0 +1,76 @@
+{
+  "name": "u1-gcode-colors",
+  "title": "U1 G-code Preview Colors",
+  "version": "0.1.1",
+  "min_daemon_version": "0.10.1-dev",
+  "description": "Fills Fluidd's G-code preview filament_colors array from the U1's live print_task state, so each tool line shows the color actually loaded on the extruder it maps to, instead of the fixed fallback palette. No Fluidd patch. Works with any color source the printer already has (RFID, screen picks, or the Spoolman helper if installed).",
+  "tagline": "Real per-tool colors in the G-code preview, from what is actually loaded.",
+  "category": "ui",
+  "channel": "experiment",
+  "printer_specific": true,
+  "source": "https://github.com/Bespok3d/u1-extras",
+  "changelog": "doc/CHANGELOG.md",
+  "published_at": "2026-07-04",
+  "updated_at": "2026-07-04",
+  "publisher": "PLACEHOLDER",
+  "provides": [
+    {
+      "service": "u1-gcode-colors"
+    }
+  ],
+  "require": [],
+  "conflicts": [],
+  "requires": {
+    "capabilities": [
+      "klipper-generic"
+    ],
+    "variables": [
+      {
+        "name": "GCODE_COLORS_ENABLED",
+        "description": "Whether the G-code preview fill runs (true) or leaves Fluidd on its fallback palette (false)",
+        "required": true
+      }
+    ]
+  },
+  "config": [
+    {
+      "key": "GCODE_COLORS_ENABLED",
+      "label": "Fill real per-tool colors",
+      "type": "toggle",
+      "onValue": "true",
+      "offValue": "false",
+      "default": "true",
+      "hint": "On: the G-code preview shows each tool's actually loaded color. Off: Fluidd falls back to its default palette.",
+      "userEditable": true,
+      "scope": "global"
+    }
+  ],
+  "permissions": [
+    "moonraker-component",
+    "moonraker-config",
+    "restart"
+  ],
+  "install": {
+    "place": [
+      {
+        "class": "moonraker-component",
+        "src": "files/moonraker/gcode_preview_colors.py"
+      },
+      {
+        "class": "moonraker-component",
+        "src": "files/moonraker/gcode_preview_color_map.py"
+      },
+      {
+        "class": "moonraker-config",
+        "src": "files/cfg/moonraker/u1-gcode-colors.cfg.tmpl",
+        "name": "u1-gcode-colors.cfg",
+        "render": true
+      }
+    ],
+    "restart": [
+      "moonraker"
+    ]
+  },
+  "conflict_resolutions": [],
+  "files": []
+}
