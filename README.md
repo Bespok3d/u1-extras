@@ -24,7 +24,6 @@ u1-extras/
     manifest.json
     files/              # payload the daemon places on the printer
     doc/README.md       # rendered in-app; not deployed
-  scripts/{pack.sh,generate-atom.mjs,assemble-list.mjs}
   .github/workflows/release.yml
   index.json            # the published sub-list (committed; referenced by main-index lists[])
   dist/                 # build output (gitignored)
@@ -33,11 +32,28 @@ u1-extras/
 Each plugin declares WHAT (a destination `class` + a `restart` hook), never a path or a raw command;
 the printer-side adapter realizes it. See `Bespok3d/doc/anatomy-of-a-plugin.md`.
 
+## Build locally
+
+Needs Node.js 20+. Builds run through the shared `Bespok3d/b3-builder` tool:
+
+```sh
+npm install github:Bespok3d/b3-builder
+npx b3-builder build --source ./moonraker-notify --atom-repo Bespok3d/u1-extras
+# -> dist/moonraker-notify-<ver>.b3 + dist/moonraker-notify.atom.json
+```
+
+Drop `--source` to build every plugin in the repo at once.
+
+The Action runs with `bake: 'true'`: a plugin that ships a `requirements.txt` or
+`klipper_requirements.txt` at its root gets its Python deps downloaded for the printer platform
+(aarch64, CPython 3.11) at build time. Pass `--bake` to do the same locally.
+
 ## Releasing
 
-Bump a plugin's `manifest.json` `version` and push to `main`. CI packs each `.b3`, cuts a release per
-plugin, regenerates this repo's `index.json` sub-list, and registers it in `Bespok3d/main-index`.
-Secret: `MAIN_INDEX_TOKEN` (contents:write on main-index). Signing deferred.
+Bump a plugin's `manifest.json` `version` and push to `main`. CI runs the `Bespok3d/b3-builder`
+Action over the whole repo, which packs each `.b3`, cuts a release per plugin, assembles this repo's
+`index.json` sub-list as `U1 Extras`, and registers it in `Bespok3d/main-index`
+(`lists/<repo>.json`). Secret: `MAIN_INDEX_TOKEN` (contents:write on main-index). Signing deferred.
 
 ## Maintainership
 
