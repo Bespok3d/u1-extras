@@ -16,6 +16,7 @@ Mainsail and from Klipper macros (`WLED_ON`, `WLED_OFF`, `SET_WLED`).
 | Strip name | The name you reference in macros, e.g. `WLED_ON STRIP=status`. |
 | WLED address | Hostname or IP of the WLED device (e.g. `wled.local` or `192.168.1.50`). |
 | LED count | Number of LEDs on the strip. |
-| Color order | Match your strip's wiring (most are `GRB`). |
+
+Color order is set in the WLED device itself, so there is nothing to configure here for it.
 
 After installing, restart is automatic. Set a preset in the WLED app and Moonraker can switch to it.
