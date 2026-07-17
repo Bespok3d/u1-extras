@@ -26,6 +26,15 @@
     "variables": []
   },
   "permissions": ["managed-service", "restart"],
+  "bake": [
+    {
+      "class": "go",
+      "source": "https://github.com/scross01/prometheus-klipper-exporter.git",
+      "commit": "9eacec280108a4da8156b47c01c2862219d86ecd",
+      "package": ".",
+      "output": "files/bin/prometheus-klipper-exporter"
+    }
+  ],
   "install": {
     "service": [
       {
