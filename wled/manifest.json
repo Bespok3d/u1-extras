@@ -55,14 +55,6 @@
       "default": "30",
       "hint": "Number of LEDs on the strip.",
       "userEditable": true
-    },
-    {
-      "key": "WLED_COLOR_ORDER",
-      "label": "Color order",
-      "type": "select",
-      "options": ["GRB", "RGB", "RGBW", "GRBW"],
-      "default": "GRB",
-      "userEditable": true
     }
   ],
   "permissions": [
