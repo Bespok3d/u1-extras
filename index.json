@@ -2,7 +2,7 @@
   "schema_version": 1,
   "name": "U1 Extras",
   "publisher": "PLACEHOLDER",
-  "updated": "2026-07-04",
+  "updated": "2026-07-17",
   "plugins": [
     {
       "name": "klipper-hooks",
@@ -25,9 +25,9 @@
         "print-hooks"
       ],
       "conflicts": [],
-      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/klipper-hooks/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/466510167",
       "changelog_url": "klipper-hooks/doc/CHANGELOG.md",
+      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/klipper-hooks/doc/README.md",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/481349105",
       "deps": []
     },
     {
@@ -51,8 +51,6 @@
         "moonraker-notify"
       ],
       "conflicts": [],
-      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/moonraker-notify/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/466510180",
       "min_daemon_version": "0.10.33-dev",
       "config": [
         {
@@ -86,6 +84,8 @@
         }
       ],
       "changelog_url": "moonraker-notify/doc/CHANGELOG.md",
+      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/moonraker-notify/doc/README.md",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/481349125",
       "deps": []
     },
     {
@@ -109,8 +109,6 @@
         "prometheus-exporter"
       ],
       "conflicts": [],
-      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/prometheus-exporter/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/466510191",
       "min_daemon_version": "0.10.33-dev",
       "homepage": "https://github.com/scross01/prometheus-klipper-exporter",
       "changelog_url": "prometheus-exporter/doc/CHANGELOG.md",
@@ -120,20 +118,22 @@
           "path": ":9101/metrics"
         }
       ],
+      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/prometheus-exporter/doc/README.md",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/481349146",
       "deps": []
     },
     {
       "name": "system-utils",
       "title": "System Utilities (curl, rsync)",
-      "version": "0.1.0",
-      "description": "Installs static arm64 builds of curl and rsync into $BESPOK3D/bin so they are available on the printer (stock Snapmaker firmware ships neither). Handy for shell scripting, backups, and transfers over SSH. Bespok3d itself does not need these (it talks to Moonraker over HTTP and uses SFTP); this is purely a convenience for users who want the tools. The binaries are fetched from their upstream static-build releases (SHA-pinned) and baked into the package; nothing is compiled or downloaded on the printer. Experimental, not yet verified on a physical printer.",
+      "version": "0.1.1",
+      "description": "Installs static arm64 builds of curl and rsync into $BESPOK3D/bin so they are available on the printer (stock Snapmaker firmware ships neither). Handy for shell scripting, backups, and transfers over SSH. Bespok3d itself does not need these (it talks to Moonraker over HTTP and uses SFTP); this is purely a convenience for users who want the tools. curl is fetched from its upstream static-build release (SHA-pinned); rsync has no static arm64 release anywhere, so it is compiled from rsync's own SHA-pinned source tarball against musl. Both are baked into the package; nothing is compiled or downloaded on the printer.",
       "tagline": "Static curl and rsync on the printer (stock firmware has neither).",
       "category": "system",
       "channel": "stable",
       "publisher": "PLACEHOLDER",
       "printer_specific": false,
       "published_at": "2026-06-09",
-      "updated_at": "2026-06-09",
+      "updated_at": "2026-07-17",
       "requires": {
         "capabilities": [
           "klipper-generic"
@@ -143,10 +143,10 @@
         "system-utils"
       ],
       "conflicts": [],
-      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/system-utils/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/466510206",
       "min_daemon_version": "0.10.34-dev",
       "changelog_url": "system-utils/doc/CHANGELOG.md",
+      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/system-utils/doc/README.md",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/481349167",
       "deps": []
     },
     {
@@ -170,8 +170,6 @@
         "u1-gcode-colors"
       ],
       "conflicts": [],
-      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/u1-gcode-colors/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/466510215",
       "min_daemon_version": "0.10.1-dev",
       "config": [
         {
@@ -187,6 +185,8 @@
         }
       ],
       "changelog_url": "u1-gcode-colors/doc/CHANGELOG.md",
+      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/u1-gcode-colors/doc/README.md",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/481349229",
       "deps": []
     },
     {
@@ -210,8 +210,6 @@
         "wled"
       ],
       "conflicts": [],
-      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/wled/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/466510224",
       "config": [
         {
           "key": "WLED_NAME",
@@ -236,22 +234,11 @@
           "default": "30",
           "hint": "Number of LEDs on the strip.",
           "userEditable": true
-        },
-        {
-          "key": "WLED_COLOR_ORDER",
-          "label": "Color order",
-          "type": "select",
-          "options": [
-            "GRB",
-            "RGB",
-            "RGBW",
-            "GRBW"
-          ],
-          "default": "GRB",
-          "userEditable": true
         }
       ],
       "changelog_url": "wled/doc/CHANGELOG.md",
+      "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/wled/doc/README.md",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/481349243",
       "deps": []
     }
   ],
