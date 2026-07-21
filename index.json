@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "name": "U1 Extras",
-  "publisher": "PLACEHOLDER",
+  "publisher": "679939555819fb5f6423dc68c4388e76bfa9b4e0",
   "updated": "2026-07-17",
   "plugins": [
     {
@@ -12,7 +12,7 @@
       "tagline": "Auto-run _PRINT_START_* / _PRINT_END_* hooks. Number them to order them.",
       "category": "printing",
       "channel": "experiment",
-      "publisher": "PLACEHOLDER",
+      "publisher": "679939555819fb5f6423dc68c4388e76bfa9b4e0",
       "printer_specific": false,
       "published_at": "2026-06-09",
       "updated_at": "2026-06-09",
@@ -27,7 +27,7 @@
       "conflicts": [],
       "changelog_url": "klipper-hooks/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/klipper-hooks/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/481349105",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/484988474",
       "deps": []
     },
     {
@@ -38,7 +38,7 @@
       "tagline": "Get a ping on your phone or chat when a print finishes or fails.",
       "category": "system",
       "channel": "stable",
-      "publisher": "PLACEHOLDER",
+      "publisher": "679939555819fb5f6423dc68c4388e76bfa9b4e0",
       "printer_specific": false,
       "published_at": "2026-06-09",
       "updated_at": "2026-06-09",
@@ -85,7 +85,7 @@
       ],
       "changelog_url": "moonraker-notify/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/moonraker-notify/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/481349125",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/484988490",
       "deps": []
     },
     {
@@ -96,7 +96,7 @@
       "tagline": "Klipper/Moonraker metrics in Prometheus format for Grafana & co.",
       "category": "system",
       "channel": "stable",
-      "publisher": "PLACEHOLDER",
+      "publisher": "679939555819fb5f6423dc68c4388e76bfa9b4e0",
       "printer_specific": false,
       "published_at": "2026-06-09",
       "updated_at": "2026-06-09",
@@ -119,7 +119,7 @@
         }
       ],
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/prometheus-exporter/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/481349146",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/484988505",
       "deps": []
     },
     {
@@ -130,7 +130,7 @@
       "tagline": "Static curl and rsync on the printer (stock firmware has neither).",
       "category": "system",
       "channel": "stable",
-      "publisher": "PLACEHOLDER",
+      "publisher": "679939555819fb5f6423dc68c4388e76bfa9b4e0",
       "printer_specific": false,
       "published_at": "2026-06-09",
       "updated_at": "2026-07-17",
@@ -146,7 +146,7 @@
       "min_daemon_version": "0.10.34-dev",
       "changelog_url": "system-utils/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/system-utils/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/481349167",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/484988534",
       "deps": []
     },
     {
@@ -157,7 +157,7 @@
       "tagline": "Real per-tool colors in the G-code preview, from what is actually loaded.",
       "category": "ui",
       "channel": "experiment",
-      "publisher": "PLACEHOLDER",
+      "publisher": "679939555819fb5f6423dc68c4388e76bfa9b4e0",
       "printer_specific": true,
       "published_at": "2026-07-04",
       "updated_at": "2026-07-04",
@@ -186,7 +186,7 @@
       ],
       "changelog_url": "u1-gcode-colors/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/u1-gcode-colors/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/481349229",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/484988569",
       "deps": []
     },
     {
@@ -197,7 +197,7 @@
       "tagline": "Drive a WLED LED strip from your printer.",
       "category": "system",
       "channel": "experiment",
-      "publisher": "PLACEHOLDER",
+      "publisher": "679939555819fb5f6423dc68c4388e76bfa9b4e0",
       "printer_specific": false,
       "published_at": "2026-06-09",
       "updated_at": "2026-06-09",
@@ -238,7 +238,7 @@
       ],
       "changelog_url": "wled/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/wled/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/481349243",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/484988592",
       "deps": []
     }
   ],
