@@ -28,7 +28,7 @@
       "conflicts": [],
       "changelog_url": "klipper-hooks/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/klipper-hooks/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/487124050",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/487631675",
       "deps": []
     },
     {
@@ -87,14 +87,14 @@
       ],
       "changelog_url": "moonraker-notify/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/moonraker-notify/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/487124090",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/487631699",
       "deps": []
     },
     {
       "name": "prometheus-exporter",
       "title": "Prometheus Exporter",
-      "version": "0.1.0",
-      "description": "Runs scross01/prometheus-klipper-exporter as a managed service, exposing Klipper/Moonraker metrics in Prometheus format at :9101/metrics so you can scrape them into Prometheus, Grafana, Datadog, etc. The exporter is a small Go binary cross-compiled for the printer in CI and baked into the package; nothing is built on the printer. Observability for people who run a metrics stack; most users will not need it. Experimental, not yet verified on a physical printer.",
+      "version": "0.1.1",
+      "description": "Runs scross01/prometheus-klipper-exporter as a managed service so you can scrape Klipper/Moonraker metrics into Prometheus, Grafana, Datadog, etc. It is a multi-target exporter: the printer's series come from :9101/probe?target=127.0.0.1:7125 (the U1's Moonraker), while bare :9101/metrics carries only the exporter's own runtime. The exporter is a small Go binary cross-compiled for the printer in CI and baked into the package; nothing is built on the printer. Observability for people who run a metrics stack; most users will not need it. Verified on a Snapmaker U1.",
       "tagline": "Klipper/Moonraker metrics in Prometheus format for Grafana & co.",
       "category": "system",
       "channel": "stable",
@@ -117,12 +117,12 @@
       "changelog_url": "prometheus-exporter/doc/CHANGELOG.md",
       "endpoints": [
         {
-          "label": "Metrics",
-          "path": ":9101/metrics"
+          "label": "Klipper metrics",
+          "path": ":9101/probe?target=127.0.0.1:7125"
         }
       ],
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/prometheus-exporter/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/487124127",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/487631728",
       "deps": []
     },
     {
@@ -150,7 +150,7 @@
       "min_daemon_version": "0.10.34-dev",
       "changelog_url": "system-utils/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/system-utils/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/487124161",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/487631762",
       "deps": []
     },
     {
@@ -191,7 +191,7 @@
       ],
       "changelog_url": "u1-gcode-colors/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/u1-gcode-colors/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/487124188",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/487631787",
       "deps": []
     },
     {
@@ -244,7 +244,7 @@
       ],
       "changelog_url": "wled/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/wled/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/487124224",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/487631806",
       "deps": []
     }
   ],
