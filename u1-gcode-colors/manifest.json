@@ -2,6 +2,7 @@
   "name": "u1-gcode-colors",
   "title": "U1 G-code Preview Colors",
   "version": "0.1.1",
+  "author": "bespoked",
   "min_daemon_version": "0.10.1-dev",
   "description": "Fills Fluidd's G-code preview filament_colors array from the U1's live print_task state, so each tool line shows the color actually loaded on the extruder it maps to, instead of the fixed fallback palette. No Fluidd patch. Works with any color source the printer already has (RFID, screen picks, or the Spoolman helper if installed).",
   "tagline": "Real per-tool colors in the G-code preview, from what is actually loaded.",

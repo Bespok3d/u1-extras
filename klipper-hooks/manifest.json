@@ -2,6 +2,7 @@
   "name": "klipper-hooks",
   "title": "Print Lifecycle Hooks",
   "version": "0.1.0",
+  "author": "bespoked",
   "description": "Lets any macro named _PRINT_START_*, _PRINT_END_*, or _CANCEL_PRINT_* run automatically as part of PRINT_START / PRINT_END / CANCEL_PRINT, without editing those core macros. Drop a [gcode_macro _PRINT_START_my_thing] in your config and it just runs. Hooks are run in sorted name order, so prefix them with a number (e.g. _PRINT_START_10_purge, _PRINT_START_20_level) to control sequencing. DANGER: if two hooks must run in a specific order and you do not number them, the order is only as stable as their names; an unordered hook that depends on another can misfire. Experimental and not yet verified on a physical printer; it overrides PRINT_START/PRINT_END/CANCEL_PRINT, so it can conflict with other plugins that override the same macros.",
   "tagline": "Auto-run _PRINT_START_* / _PRINT_END_* hooks. Number them to order them.",
   "category": "printing",

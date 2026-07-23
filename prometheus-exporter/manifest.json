@@ -2,6 +2,7 @@
   "name": "prometheus-exporter",
   "title": "Prometheus Exporter",
   "version": "0.1.0",
+  "author": "bespoked",
   "min_daemon_version": "0.10.33-dev",
   "description": "Runs scross01/prometheus-klipper-exporter as a managed service, exposing Klipper/Moonraker metrics in Prometheus format at :9101/metrics so you can scrape them into Prometheus, Grafana, Datadog, etc. The exporter is a small Go binary cross-compiled for the printer in CI and baked into the package; nothing is built on the printer. Observability for people who run a metrics stack; most users will not need it. Experimental, not yet verified on a physical printer.",
   "tagline": "Klipper/Moonraker metrics in Prometheus format for Grafana & co.",
@@ -22,10 +23,15 @@
   "require": [],
   "conflicts": [],
   "requires": {
-    "capabilities": ["klipper-generic"],
+    "capabilities": [
+      "klipper-generic"
+    ],
     "variables": []
   },
-  "permissions": ["managed-service", "restart"],
+  "permissions": [
+    "managed-service",
+    "restart"
+  ],
   "bake": [
     {
       "class": "go",
@@ -40,9 +46,14 @@
       {
         "name": "prometheus-exporter",
         "command": "$BESPOK3D_PLUGINS/prometheus-exporter/files/bin/prometheus-klipper-exporter",
-        "args": ["-web.listen-address", "0.0.0.0:9101"],
+        "args": [
+          "-web.listen-address",
+          "0.0.0.0:9101"
+        ],
         "autostart": true,
-        "ports": [9101]
+        "ports": [
+          9101
+        ]
       }
     ],
     "restart": []
