@@ -1,10 +1,10 @@
 {
   "name": "prometheus-exporter",
   "title": "Prometheus Exporter",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "bespoked",
   "min_daemon_version": "0.10.33-dev",
-  "description": "Runs scross01/prometheus-klipper-exporter as a managed service, exposing Klipper/Moonraker metrics in Prometheus format at :9101/metrics so you can scrape them into Prometheus, Grafana, Datadog, etc. The exporter is a small Go binary cross-compiled for the printer in CI and baked into the package; nothing is built on the printer. Observability for people who run a metrics stack; most users will not need it. Experimental, not yet verified on a physical printer.",
+  "description": "Runs scross01/prometheus-klipper-exporter as a managed service so you can scrape Klipper/Moonraker metrics into Prometheus, Grafana, Datadog, etc. It is a multi-target exporter: the printer's series come from :9101/probe?target=127.0.0.1:7125 (the U1's Moonraker), while bare :9101/metrics carries only the exporter's own runtime. The exporter is a small Go binary cross-compiled for the printer in CI and baked into the package; nothing is built on the printer. Observability for people who run a metrics stack; most users will not need it. Verified on a Snapmaker U1.",
   "tagline": "Klipper/Moonraker metrics in Prometheus format for Grafana & co.",
   "category": "system",
   "channel": "stable",
@@ -60,8 +60,8 @@
   },
   "endpoints": [
     {
-      "label": "Metrics",
-      "path": ":9101/metrics"
+      "label": "Klipper metrics",
+      "path": ":9101/probe?target=127.0.0.1:7125"
     }
   ],
   "conflict_resolutions": [],
