@@ -19,4 +19,4 @@ You can install more than one notifier (give each a different name) to reach sev
 ## How the dependency works
 
 Apprise is pure-Python. It is baked into this package at build time and linked into Moonraker's
-interpreter when you install; the printer never runs `pip` (ADR-0036).
+interpreter when you install; the printer never runs `pip`.
