@@ -28,7 +28,7 @@
       "conflicts": [],
       "changelog_url": "klipper-hooks/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/klipper-hooks/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/489807598",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/490659431",
       "deps": []
     },
     {
@@ -87,7 +87,7 @@
       ],
       "changelog_url": "moonraker-notify/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/moonraker-notify/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/489807603",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/490659461",
       "deps": []
     },
     {
@@ -122,7 +122,7 @@
         }
       ],
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/prometheus-exporter/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/489807635",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/490659492",
       "deps": []
     },
     {
@@ -150,7 +150,7 @@
       "min_daemon_version": "0.10.34-dev",
       "changelog_url": "system-utils/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/system-utils/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/489807670",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/490659546",
       "deps": []
     },
     {
@@ -191,7 +191,7 @@
       ],
       "changelog_url": "u1-gcode-colors/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/u1-gcode-colors/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/489807677",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/490659579",
       "deps": []
     },
     {
@@ -244,7 +244,7 @@
       ],
       "changelog_url": "wled/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/wled/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/489807685",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/490659617",
       "deps": []
     }
   ],
