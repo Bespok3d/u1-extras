@@ -1,0 +1,22 @@
+version = 1
+
+# This repo is GPL-3.0-only as a whole. Its own work has Extended Firmware lineage, which is
+# GPL-3.0-only, and the rsync binary it ships grants GPL-3.0-or-later, which permits the repo's
+# more restrictive suffix.
+#
+# Every file tracked here is the project's own work. `precedence = "aggregate"` means a file that
+# carries its own SPDX header keeps it, and this block only fills in the ones that do not, which is
+# the documentation, the templates, the manifests and the plugin payload trees.
+#
+# The LICENSES directory also holds the texts for the third-party code that the BUILT packages
+# convey but that is not committed here: the rsync and curl binaries that `system-utils/toolchain/`
+# compiles, the prometheus-klipper-exporter payload fetched from its manifest, and
+# the Python packages baked into `moonraker-notify` at build time. `reuse lint` reports those texts
+# as unused because no file in this repo carries their tag. They stay because the packages we
+# publish carry that code and must carry its licences.
+
+[[annotations]]
+path = "**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Copyright (C) 2026 unlucio and the Bespok3d contributors"
+SPDX-License-Identifier = "GPL-3.0-only"

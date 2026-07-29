@@ -12,6 +12,6 @@ are purely for your own use.
 - Binaries land in `$BESPOK3D/bin`. They are not yet added to your login `PATH`, so call them by full
   path (e.g. `$BESPOK3D/bin/curl ...`) or add that dir to your `PATH`. A base-layer `PATH` entry is a
   planned follow-up.
-- The binaries are fetched from their upstream static-build releases (SHA-pinned) and baked into the
-  package in CI; nothing is downloaded or compiled on the printer.
-- **Experimental**, not yet verified on a physical printer.
+- Both binaries are compiled by Bespok3d in CI, from each project's own SHA-pinned source tarball, and
+  baked into the package; nothing is downloaded or compiled on the printer.
+- **Experimental.** Installed and running on a U1.
