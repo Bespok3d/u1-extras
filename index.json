@@ -2,13 +2,13 @@
   "schema_version": 1,
   "name": "U1 Extras",
   "publisher": "679939555819fb5f6423dc68c4388e76bfa9b4e0",
-  "updated": "2026-07-17",
+  "updated": "2026-07-28",
   "plugins": [
     {
       "name": "klipper-hooks",
       "title": "Print Lifecycle Hooks",
       "version": "0.1.0",
-      "description": "Lets any macro named _PRINT_START_*, _PRINT_END_*, or _CANCEL_PRINT_* run automatically as part of PRINT_START / PRINT_END / CANCEL_PRINT, without editing those core macros. Drop a [gcode_macro _PRINT_START_my_thing] in your config and it just runs. Hooks are run in sorted name order, so prefix them with a number (e.g. _PRINT_START_10_purge, _PRINT_START_20_level) to control sequencing. DANGER: if two hooks must run in a specific order and you do not number them, the order is only as stable as their names; an unordered hook that depends on another can misfire. Experimental and not yet verified on a physical printer; it overrides PRINT_START/PRINT_END/CANCEL_PRINT, so it can conflict with other plugins that override the same macros.",
+      "description": "Lets any macro named _PRINT_START_*, _PRINT_END_*, or _CANCEL_PRINT_* run automatically as part of PRINT_START / PRINT_END / CANCEL_PRINT, without editing those core macros. Drop a [gcode_macro _PRINT_START_my_thing] in your config and it just runs. Hooks are run in sorted name order, so prefix them with a number (e.g. _PRINT_START_10_purge, _PRINT_START_20_level) to control sequencing. DANGER: if two hooks must run in a specific order and you do not number them, the order is only as stable as their names; an unordered hook that depends on another can misfire. Experimental; it overrides PRINT_START/PRINT_END/CANCEL_PRINT, so it can conflict with other plugins that override the same macros.",
       "tagline": "Auto-run _PRINT_START_* / _PRINT_END_* hooks. Number them to order them.",
       "category": "printing",
       "channel": "experiment",
@@ -28,7 +28,7 @@
       "conflicts": [],
       "changelog_url": "klipper-hooks/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/klipper-hooks/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/490659431",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/494366373",
       "deps": []
     },
     {
@@ -87,7 +87,7 @@
       ],
       "changelog_url": "moonraker-notify/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/moonraker-notify/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/490659461",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/494366419",
       "deps": []
     },
     {
@@ -122,21 +122,21 @@
         }
       ],
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/prometheus-exporter/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/490659492",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/494366439",
       "deps": []
     },
     {
       "name": "system-utils",
       "title": "System Utilities (curl, rsync)",
-      "version": "0.1.1",
-      "description": "Installs static arm64 builds of curl and rsync into $BESPOK3D/bin so they are available on the printer (stock Snapmaker firmware ships neither). Handy for shell scripting, backups, and transfers over SSH. Bespok3d itself does not need these (it talks to Moonraker over HTTP and uses SFTP); this is purely a convenience for users who want the tools. curl is fetched from its upstream static-build release (SHA-pinned); rsync has no static arm64 release anywhere, so it is compiled from rsync's own SHA-pinned source tarball against musl. Both are baked into the package; nothing is compiled or downloaded on the printer.",
+      "version": "0.1.2",
+      "description": "Installs static arm64 builds of curl and rsync into $BESPOK3D/bin so they are available on the printer (stock Snapmaker firmware ships neither). Handy for shell scripting, backups, and transfers over SSH. Bespok3d itself does not need these (it talks to Moonraker over HTTP and uses SFTP); this is purely a convenience for users who want the tools. Both are compiled by Bespok3d from each project's own SHA-pinned source tarball against musl, and baked into the package; nothing is compiled or downloaded on the printer.",
       "tagline": "Static curl and rsync on the printer (stock firmware has neither).",
       "category": "system",
       "channel": "stable",
       "publisher": "679939555819fb5f6423dc68c4388e76bfa9b4e0",
       "printer_specific": false,
       "published_at": "2026-06-09",
-      "updated_at": "2026-07-17",
+      "updated_at": "2026-07-28",
       "author": "bespoked",
       "requires": {
         "capabilities": [
@@ -150,7 +150,7 @@
       "min_daemon_version": "0.10.34-dev",
       "changelog_url": "system-utils/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/system-utils/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/490659546",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/494366498",
       "deps": []
     },
     {
@@ -191,7 +191,7 @@
       ],
       "changelog_url": "u1-gcode-colors/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/u1-gcode-colors/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/490659579",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/494366531",
       "deps": []
     },
     {
@@ -244,7 +244,7 @@
       ],
       "changelog_url": "wled/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/wled/doc/README.md",
-      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/490659617",
+      "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/494366555",
       "deps": []
     }
   ],
