@@ -1,5 +1,10 @@
 # u1-extras
 
+[![licence](https://img.shields.io/badge/licence-GPL--3.0-blue)](LICENSE)
+[![release](https://img.shields.io/github/v/release/Bespok3d/u1-extras)](https://github.com/Bespok3d/u1-extras/releases)
+![printer](https://img.shields.io/badge/printer-Snapmaker%20U1-informational)
+![stock firmware](https://img.shields.io/badge/stock%20firmware-no%20flashing-brightgreen)
+
 A co-repo of optional Bespok3d add-ons for the Snapmaker U1 (and Klipper printers), each installable
 on its own from the store. A grab-bag of server-side extras and small U1 niceties: LED control, push
 notifications, monitoring, handy system utilities, and G-code preview polish.
@@ -76,11 +81,11 @@ charset-normalizer and PyYAML, shipped as those projects publish them under the 
 **Fetched or built at package time.** These are not in the repository. Each plugin's `manifest.json`
 carries a bake directive that fetches or builds them, so they enter only the built `.b3` package.
 
-| Component | What it is | Version | Licence |
-| --- | --- | --- | --- |
-| curl | the `system-utils` command, built by Bespok3d, statically linked against nine libraries | 8.17.0 | the curl licence, plus each linked library's own |
-| rsync | the `system-utils` command | 3.4.4 | GPL-3.0-or-later |
-| prometheus-klipper-exporter | the `prometheus-exporter` binary | commit `9eacec280108a4da8156b47c01c2862219d86ecd` | MIT |
+| Component                   | What it is                                                                              | Version                                           | Licence                                          |
+| --------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------ |
+| curl                        | the `system-utils` command, built by Bespok3d, statically linked against nine libraries | 8.17.0                                            | the curl licence, plus each linked library's own |
+| rsync                       | the `system-utils` command                                                              | 3.4.4                                             | GPL-3.0-or-later                                 |
+| prometheus-klipper-exporter | the `prometheus-exporter` binary                                                        | commit `9eacec280108a4da8156b47c01c2862219d86ecd` | MIT                                              |
 
 ### Corresponding Source
 
@@ -138,3 +143,11 @@ cannot happen is code offered under version 3 of the GPL alone being re-offered 
 
 Bespok3d is a project of the Bespok3d Organisation, which is not a legal entity. Copyright is held by
 the individual authors named above.
+
+## Support this project
+
+`u1-gcode-colors` are Bespok3d's own work. `moonraker-notify`,
+`wled`, `klipper-hooks`, `prometheus-exporter` and `system-utils` package software written by other people, and a donation
+here is not a donation to them.
+
+If our part saved you an afternoon, you can [buy me a coffee](https://buymeacoffee.com/unlucio).
