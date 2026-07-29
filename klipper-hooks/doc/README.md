@@ -17,11 +17,11 @@ Hooks run in **sorted name order**, so **prefix them with a number** to control 
 
 > **Danger.** The order is only as reliable as the names. If two hooks must run in a specific order
 > and you do not number them, one can run before the other expects it to. Always number hooks that
-> have dependencies. This is the deliberate, documented sharp edge of a discover-and-run system.
+> have dependencies. This is a known, documented sharp edge of a discover-and-run system.
 
 ## Caveats
 
-- **Experimental, not yet verified on a physical printer.**
+- **Experimental.** Installed and running on a U1.
 - It overrides `PRINT_START`/`PRINT_END`/`CANCEL_PRINT` via `rename_existing`, so it can **conflict
   with other plugins that override the same macros**. Install it alone among macro-overriders.
 - Assumes your config defines `PRINT_START`/`PRINT_END`/`CANCEL_PRINT` by those names.
