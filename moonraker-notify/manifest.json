@@ -3,7 +3,7 @@
   "title": "Print Notifications",
   "version": "0.1.0",
   "author": "bespoked",
-  "min_daemon_version": "0.10.33-dev",
+  "min_daemon_version": "0.10.33",
   "description": "Sends a push notification when a print finishes, fails, or errors, using Moonraker's [notifier] and the Apprise library. Apprise speaks to about a hundred services from one address: Telegram, Discord, Slack, ntfy, Pushover, email, Matrix, Home Assistant, and more. Paste the Apprise URL for your service (e.g. ntfy://ntfy.sh/your-topic or tgram://bottoken/chatid) and pick which events to be told about. The Apprise library is baked into the package and linked into Moonraker's interpreter at install; no pip ever runs on the printer.",
   "tagline": "Get a ping on your phone or chat when a print finishes or fails.",
   "category": "system",

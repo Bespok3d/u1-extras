@@ -3,7 +3,7 @@
   "title": "System Utilities (curl, rsync)",
   "version": "0.1.2",
   "author": "bespoked",
-  "min_daemon_version": "0.10.34-dev",
+  "min_daemon_version": "0.10.34",
   "description": "Installs static arm64 builds of curl and rsync into $BESPOK3D/bin so they are available on the printer (stock Snapmaker firmware ships neither). Handy for shell scripting, backups, and transfers over SSH. Bespok3d itself does not need these (it talks to Moonraker over HTTP and uses SFTP); this is purely a convenience for users who want the tools. Both are compiled by Bespok3d from each project's own SHA-pinned source tarball against musl, and baked into the package; nothing is compiled or downloaded on the printer.",
   "tagline": "Static curl and rsync on the printer (stock firmware has neither).",
   "category": "system",

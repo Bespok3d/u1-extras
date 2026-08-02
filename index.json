@@ -53,7 +53,7 @@
         "moonraker-notify"
       ],
       "conflicts": [],
-      "min_daemon_version": "0.10.33-dev",
+      "min_daemon_version": "0.10.33",
       "config": [
         {
           "key": "NOTIFY_NAME",
@@ -112,7 +112,7 @@
         "prometheus-exporter"
       ],
       "conflicts": [],
-      "min_daemon_version": "0.10.33-dev",
+      "min_daemon_version": "0.10.33",
       "homepage": "https://github.com/scross01/prometheus-klipper-exporter",
       "changelog_url": "prometheus-exporter/doc/CHANGELOG.md",
       "endpoints": [
@@ -147,7 +147,7 @@
         "system-utils"
       ],
       "conflicts": [],
-      "min_daemon_version": "0.10.34-dev",
+      "min_daemon_version": "0.10.34",
       "changelog_url": "system-utils/doc/CHANGELOG.md",
       "doc_url": "https://github.com/Bespok3d/u1-extras/blob/main/system-utils/doc/README.md",
       "download_url": "https://api.github.com/repos/Bespok3d/u1-extras/releases/assets/494366498",
@@ -175,7 +175,7 @@
         "u1-gcode-colors"
       ],
       "conflicts": [],
-      "min_daemon_version": "0.10.1-dev",
+      "min_daemon_version": "0.10.1",
       "config": [
         {
           "key": "GCODE_COLORS_ENABLED",
