@@ -76,5 +76,7 @@
     ]
   },
   "conflict_resolutions": [],
-  "files": []
+  "files": [],
+  "license": "https://github.com/Bespok3d/u1-extras/blob/dev/wled/doc/LICENSE",
+  "attributions": "# Attributions - wled\n\n**Plugin author:** Bespok3d, driving Moonraker's built-in `[wled]` against WLED by Christian Schwinne (Aircoookie); WLED on the U1 was first done in the Extended Firmware overlay `12-patch-moonraker` (paxx12)\n\nControls WLED light strips from the printer.\n\n| Upstream project | Author | Licence | Needed at runtime | Code ships in this package |\n| --- | --- | --- | --- | --- |\n| WLED | Christian Schwinne (Aircoookie) and the WLED contributors | MIT | yes | no |\n\nWLED runs on your own light controller; nothing from it ships inside this plugin, which only\nconfigures Moonraker's built-in `[wled]` component. Upstream: https://github.com/Aircoookie/WLED\n\nPorted from the Extended Firmware overlay `12-patch-moonraker` (paxx12), GPL-3.0.\n"
 }

@@ -65,5 +65,7 @@
     }
   ],
   "conflict_resolutions": [],
-  "files": []
+  "files": [],
+  "license": "https://github.com/Bespok3d/u1-extras/blob/dev/prometheus-exporter/doc/LICENSE",
+  "attributions": "# Attributions - prometheus-exporter\n\n**Plugin author:** Bespok3d, vendoring prometheus-klipper-exporter (Steve Cross, scross01); monitoring on the U1 was first done by @horzadome in the Extended Firmware overlay `67-app-monitoring`\n\nPublishes printer metrics for Prometheus.\n\n| Upstream project | Author | Licence | Needed at runtime | Code ships in this package |\n| --- | --- | --- | --- | --- |\n| prometheus-klipper-exporter | Steve Cross (scross01) | MIT | yes | yes |\n\nThe exporter is cross-compiled to a static arm64 binary at build time and shipped inside this\nplugin. Upstream: https://github.com/scross01/prometheus-klipper-exporter\n\nPorted from the Extended Firmware overlay `67-app-monitoring` (paxx12), GPL-3.0.\n\n## Copyright notices\n\nMIT requires the notice to travel with the binary this plugin ships. The full licence text is in\n`LICENSES/MIT.txt` at the root of this repo.\n\n| Component | Licence | Copyright notice, as the project states it |\n| --- | --- | --- |\n| prometheus-klipper-exporter | MIT | `Copyright 2022 Stephen Cross` |\n\nRead from `LICENSE` in scross01/prometheus-klipper-exporter, retrieved 2026-07-28.\n"
 }

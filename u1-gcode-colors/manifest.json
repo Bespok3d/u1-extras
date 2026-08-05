@@ -73,5 +73,7 @@
     ]
   },
   "conflict_resolutions": [],
-  "files": []
+  "files": [],
+  "license": "https://github.com/Bespok3d/u1-extras/blob/dev/u1-gcode-colors/doc/LICENSE",
+  "attributions": "# Attributions - u1-gcode-colors\n\n**Plugin author:** Bespok3d\n\nShows per-tool filament colours in the slicer preview.\n\nNo third-party code ships in this package.\n"
 }

@@ -42,5 +42,7 @@
     ]
   },
   "conflict_resolutions": [],
-  "files": []
+  "files": [],
+  "license": "https://github.com/Bespok3d/u1-extras/blob/dev/klipper-hooks/doc/LICENSE",
+  "attributions": "# Attributions - klipper-hooks\n\n**Plugin author:** Bespok3d, rewritten from the Extended Firmware overlay `35-feature-klipper-hooks` (paxx12); diverged since\n\nLets plugins hook into print start, end and cancel.\n\nNo third-party code ships in this package.\n\nThe idea comes from the Extended Firmware overlay `35-feature-klipper-hooks` (paxx12), GPL-3.0. That\noverlay patches Klipper's source; this plugin instead overrides the macros with `rename_existing`,\nwritten from scratch. No code from the overlay ships here.\n"
 }
