@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2 (2026-08-16)
+
+U1 G-code Preview Colors is now a stable plugin. Before, it only showed up in the store if you had set your
+plugin channel to testing; now it shows for everyone. Nothing about the plugin itself changed.
+
 ## 0.1.1 (2026-07-04)
 
 - Verified on a real Snapmaker U1: the G-code preview now shows each tool's actually loaded
