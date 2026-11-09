@@ -119,17 +119,16 @@ class GcodePreviewColors:
     def _fill_file(self, storage: MetadataStorage, filename: str) -> None:
         try:
             entry = storage.get(filename)
-            colors = self._colors_for_file(filename, entry)
-            if colors is None or entry.get(COLORS_KEY) == colors:
+            if not isinstance(entry, dict):
                 return
-            entry[COLORS_KEY] = colors
-            storage.insert(filename, entry)
+            colors = self._colors_for_file(filename, entry)
+            if entry.get(COLORS_KEY) == colors:
+                return
+            storage.insert(filename, _with_colors(entry, colors))
         except Exception:
             logging.exception("[gcode_preview_colors] color fill failed for %s", filename)
 
-    def _colors_for_file(self, filename: str, entry: Any) -> list[str] | None:
-        if not isinstance(entry, dict):
-            return None
+    def _colors_for_file(self, filename: str, entry: dict[str, Any]) -> list[str] | None:
         live = self._live_filament() if filename == self._file_in_play() else NO_LIVE_FILAMENT
         sliced_colors = parse_sliced_colors(entry.get(SLICED_COLORS_KEY))
         return compute_filament_colors(sliced_colors, live)
@@ -140,6 +139,14 @@ class GcodePreviewColors:
             rgba_by_extruder=self.live_state.get("filament_color_rgba", []),
             filament_exist_by_extruder=self.live_state.get("filament_exist", []),
         )
+
+
+# A file with no colour to show carries none: a printed file whose slicer named no colour drops
+# the loaded colours it showed during the print instead of keeping them for good.
+def _with_colors(entry: dict[str, Any], colors: list[str] | None) -> dict[str, Any]:
+    if colors is None:
+        return {key: value for key, value in entry.items() if key != COLORS_KEY}
+    return {**entry, COLORS_KEY: colors}
 
 
 # Klippy drives this via the subscription callback, so a malformed push must not raise into

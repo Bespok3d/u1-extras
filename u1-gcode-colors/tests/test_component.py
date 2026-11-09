@@ -232,6 +232,17 @@ def test_the_printed_file_goes_back_to_its_sliced_colors_when_the_print_ends():
     assert store.get(PRINTED_FILE)["filament_colors"] == SLICED_FILAMENT_COLORS
 
 
+def test_a_printed_file_the_slicer_gave_no_colours_drops_the_loaded_ones_when_the_print_ends():
+    """With no sliced colour to go back to, the file kept the loaded colours for good."""
+    metadata = {PRINTED_FILE: {"filament_colour": ";;"}}
+    component, store = _build(metadata)
+    component._merge_live_state(LIVE_STATUS)
+    component._fill_all_files()
+    assert store.get(PRINTED_FILE)["filament_colors"] == ["#AA0000", "#00BB00", "#0000CC"]
+    component._handle_status_update({"print_stats": {"state": "complete"}}, 1.0)
+    assert "filament_colors" not in store.get(PRINTED_FILE)
+
+
 def test_a_print_starting_moves_the_mapped_colors_onto_its_file():
     metadata = {PRINTED_FILE: {"filament_colour": SLICED_COLORS}}
     component, store = _build(metadata)
