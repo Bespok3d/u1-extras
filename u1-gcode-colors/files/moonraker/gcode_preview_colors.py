@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Any
 
 try:
     from .gcode_preview_color_map import (
+        NO_LIVE_FILAMENT,
         LiveFilamentState,
         compute_filament_colors,
         parse_sliced_colors,
@@ -15,6 +16,7 @@ except ImportError:
     # resolve. On the printer Moonraker imports it as moonraker.components.gcode_preview_colors
     # and the relative import wins.
     from gcode_preview_color_map import (
+        NO_LIVE_FILAMENT,
         LiveFilamentState,
         compute_filament_colors,
         parse_sliced_colors,
@@ -29,6 +31,11 @@ GCODE_ROOT = "gcodes"
 COLORS_KEY = "filament_colors"
 SLICED_COLORS_KEY = "filament_colour"
 TRACKED_FIELDS = ("extruder_map_table", "filament_color_rgba", "filament_exist")
+PRINT_STATS_OBJECT = "print_stats"
+PRINT_STATS_FIELDS = ("state", "filename")
+# The states in which print_stats names a file the printer feeds with the live map. A finished,
+# cancelled or failed print keeps its filename, but the map then belongs to no print.
+STATES_WITH_A_FILE_IN_PLAY = ("printing", "paused")
 
 
 class GcodePreviewColors:
@@ -37,6 +44,7 @@ class GcodePreviewColors:
         self.enabled = config.getboolean("enabled", True)
         self.klippy_apis = self.server.lookup_component("klippy_apis")
         self.live_state: dict[str, Any] = {}
+        self.print_state: dict[str, Any] = {}
         self.server.register_event_handler(
             "server:klippy_ready", self._handle_klippy_ready
         )
@@ -49,10 +57,11 @@ class GcodePreviewColors:
             return
         try:
             status = await self.klippy_apis.subscribe_objects(
-                {PRINT_TASK_OBJECT: None}, self._handle_status_update
+                {PRINT_TASK_OBJECT: None, PRINT_STATS_OBJECT: list(PRINT_STATS_FIELDS)},
+                self._handle_status_update,
             )
         except Exception:
-            logging.exception("[gcode_preview_colors] print_task_config subscribe failed")
+            logging.exception("[gcode_preview_colors] printer state subscribe failed")
             return
         self._merge_live_state(status)
         self._fill_all_files()
@@ -60,23 +69,23 @@ class GcodePreviewColors:
     def _handle_status_update(
         self, status: dict[str, dict[str, Any]], eventtime: float
     ) -> None:
-        # The launch-time remap on the printer screen writes extruder_map_table, so this update is
-        # also the "print start" refill trigger: no separate print_stats subscription is needed.
+        # A print starting or ending moves the map onto or off a file, and the launch-time remap
+        # on the printer screen writes extruder_map_table: either one refills the previews.
         if self._merge_live_state(status):
             self._fill_all_files()
 
     def _merge_live_state(self, status: dict[str, Any]) -> bool:
-        # Klippy drives this via the subscription callback, so a malformed push must not raise into
-        # Moonraker: anything but a fields dict is simply "no update".
-        fields = status.get(PRINT_TASK_OBJECT)
-        if not isinstance(fields, dict):
-            return False
-        changed = False
-        for field in TRACKED_FIELDS:
-            if field in fields and fields[field] != self.live_state.get(field):
-                self.live_state[field] = fields[field]
-                changed = True
-        return changed
+        map_changed = _merge_fields(status, PRINT_TASK_OBJECT, TRACKED_FIELDS, self.live_state)
+        print_changed = _merge_fields(
+            status, PRINT_STATS_OBJECT, PRINT_STATS_FIELDS, self.print_state
+        )
+        return map_changed or print_changed
+
+    def _file_in_play(self) -> str | None:
+        if self.print_state.get("state") not in STATES_WITH_A_FILE_IN_PLAY:
+            return None
+        filename = self.print_state.get("filename")
+        return filename if isinstance(filename, str) and filename else None
 
     def _handle_filelist_changed(self, notify_info: dict[str, Any]) -> None:
         if not self.enabled:
@@ -110,7 +119,7 @@ class GcodePreviewColors:
     def _fill_file(self, storage: MetadataStorage, filename: str) -> None:
         try:
             entry = storage.get(filename)
-            colors = self._colors_for_entry(entry)
+            colors = self._colors_for_file(filename, entry)
             if colors is None or entry.get(COLORS_KEY) == colors:
                 return
             entry[COLORS_KEY] = colors
@@ -118,16 +127,39 @@ class GcodePreviewColors:
         except Exception:
             logging.exception("[gcode_preview_colors] color fill failed for %s", filename)
 
-    def _colors_for_entry(self, entry: Any) -> list[str] | None:
+    def _colors_for_file(self, filename: str, entry: Any) -> list[str] | None:
         if not isinstance(entry, dict):
             return None
-        live = LiveFilamentState(
+        live = self._live_filament() if filename == self._file_in_play() else NO_LIVE_FILAMENT
+        sliced_colors = parse_sliced_colors(entry.get(SLICED_COLORS_KEY))
+        return compute_filament_colors(sliced_colors, live)
+
+    def _live_filament(self) -> LiveFilamentState:
+        return LiveFilamentState(
             extruder_map_table=self.live_state.get("extruder_map_table", []),
             rgba_by_extruder=self.live_state.get("filament_color_rgba", []),
             filament_exist_by_extruder=self.live_state.get("filament_exist", []),
         )
-        sliced_colors = parse_sliced_colors(entry.get(SLICED_COLORS_KEY))
-        return compute_filament_colors(sliced_colors, live)
+
+
+# Klippy drives this via the subscription callback, so a malformed push must not raise into
+# Moonraker: anything but a fields dict is simply "no update".
+def _merge_fields(
+    status: dict[str, Any],
+    object_name: str,
+    tracked_fields: tuple[str, ...],
+    merged_state: dict[str, Any],
+) -> bool:
+    fields = status.get(object_name)
+    if not isinstance(fields, dict):
+        return False
+    changed_fields = [
+        field
+        for field in tracked_fields
+        if field in fields and fields[field] != merged_state.get(field)
+    ]
+    merged_state.update({field: fields[field] for field in changed_fields})
+    return bool(changed_fields)
 
 
 def load_component(config: ConfigHelper) -> GcodePreviewColors:

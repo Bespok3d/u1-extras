@@ -15,8 +15,13 @@ preview matches what will actually print.
 - Reads the U1's live tool to extruder mapping and each extruder's loaded filament color.
 - Writes a `filament_colors` array into each G-code file's Moonraker metadata, one entry per
   tool, so Fluidd's preview (legend and lines) shows the real loaded color.
-- Tracks changes: a remap on the printer's screen at launch, or a color change, refreshes the
-  preview to match.
+- Uses the loaded colors only for the file being printed or paused. The printer only knows which
+  tool feeds from which extruder once a print has started, so every other file, and every file
+  between prints, shows the colors it was sliced with. When the print ends, its file goes back to
+  its sliced colors too.
+- Tracks changes: a print starting or ending, a remap on the printer's screen at launch, or a color
+  change, refreshes the preview to match.
+- A spool of several colors shows its first color.
 - Falls back to the file's own sliced color when a tool has no real loaded color, and leaves
   Fluidd's default palette in place when neither is available.
 - Works automatically with the Spoolman helper plugin if installed: no separate setup, no

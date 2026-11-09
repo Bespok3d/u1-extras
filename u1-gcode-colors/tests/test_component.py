@@ -10,13 +10,21 @@ BLUE = "0000CCFF"
 GREY = "DDDDDDFF"
 IDENTITY_MAP = [0, 1, 2, 3] + [0] * 28
 
-LIVE_STATUS = {
+PRINTED_FILE = "model.gcode"
+LIVE_MAP = {
     "print_task_config": {
         "extruder_map_table": list(IDENTITY_MAP),
         "filament_color_rgba": [RED, GREEN, BLUE, GREY],
         "filament_exist": [True, True, True, True],
     }
 }
+
+
+def printer_status(print_state, filename=PRINTED_FILE):
+    return {**LIVE_MAP, "print_stats": {"state": print_state, "filename": filename}}
+
+
+LIVE_STATUS = printer_status("printing")
 
 
 class FakeMetadataStorage:
@@ -114,7 +122,7 @@ def test_toggle_off_never_writes():
 def test_filelist_changed_fills_the_added_gcode_file():
     metadata = {"added.gcode": {"filament_colour": "#101010;#202020;#303030;#404040"}}
     component, store = _build(metadata)
-    component._merge_live_state(LIVE_STATUS)
+    component._merge_live_state(printer_status("printing", "added.gcode"))
     notify = {"action": "create_file", "item": {"root": "gcodes", "path": "added.gcode"}}
     component._handle_filelist_changed(notify)
     expected = ["#AA0000", "#00BB00", "#0000CC", "#DDDDDD"]
@@ -187,3 +195,48 @@ def test_status_update_without_tracked_change_does_not_refill():
     del store.metadata["model.gcode"]["filament_colors"]
     component._handle_status_update({"print_task_config": {"filament_type": ["PLA"]}}, 1.0)
     assert "filament_colors" not in store.metadata["model.gcode"]
+
+
+SLICED_COLORS = "#101010;#202020;#303030"
+SLICED_FILAMENT_COLORS = ["#101010", "#202020", "#303030"]
+MAPPED_FILAMENT_COLORS = ["#AA0000", "#00BB00", "#0000CC"]
+
+
+def _filled_colors(status, filename=PRINTED_FILE):
+    metadata = {filename: {"filament_colour": SLICED_COLORS}}
+    component, store = _build(metadata)
+    component._merge_live_state(status)
+    component._fill_all_files()
+    return store.get(filename)["filament_colors"]
+
+
+def test_idle_printer_leaves_every_file_its_sliced_colors():
+    assert _filled_colors(printer_status("standby")) == SLICED_FILAMENT_COLORS
+
+
+def test_a_file_not_being_printed_keeps_its_sliced_colors_during_a_print():
+    status = printer_status("printing", "other.gcode")
+    assert _filled_colors(status) == SLICED_FILAMENT_COLORS
+
+
+def test_a_paused_print_keeps_the_mapped_colors():
+    assert _filled_colors(printer_status("paused")) == MAPPED_FILAMENT_COLORS
+
+
+def test_the_printed_file_goes_back_to_its_sliced_colors_when_the_print_ends():
+    metadata = {PRINTED_FILE: {"filament_colour": SLICED_COLORS}}
+    component, store = _build(metadata)
+    component._merge_live_state(LIVE_STATUS)
+    component._fill_all_files()
+    component._handle_status_update({"print_stats": {"state": "complete"}}, 1.0)
+    assert store.get(PRINTED_FILE)["filament_colors"] == SLICED_FILAMENT_COLORS
+
+
+def test_a_print_starting_moves_the_mapped_colors_onto_its_file():
+    metadata = {PRINTED_FILE: {"filament_colour": SLICED_COLORS}}
+    component, store = _build(metadata)
+    component._merge_live_state(printer_status("standby"))
+    component._fill_all_files()
+    started = {"print_stats": {"state": "printing", "filename": PRINTED_FILE}}
+    component._handle_status_update(started, 1.0)
+    assert store.get(PRINTED_FILE)["filament_colors"] == MAPPED_FILAMENT_COLORS

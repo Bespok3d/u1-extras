@@ -9,6 +9,10 @@ The mapping, settled in the u1-gcode-colors design: for each gcode tool index t,
 filament_colors[t] = "#" + filament_color_rgba[extruder_map_table[t]][0:6]. The fallback ladder
 per tool is: the real color loaded on the mapped physical extruder, else the file's own sliced
 filament_colour[t], else unset (Fluidd's palette).
+
+The map is only known for the file the printer is printing or holding paused: between prints the
+printer keeps its default or leftover map, which says nothing about how any file will be fed. Every
+other file is therefore colored with NO_LIVE_FILAMENT, which leaves its own sliced colors.
 """
 from __future__ import annotations
 
@@ -27,6 +31,11 @@ class LiveFilamentState:
     extruder_map_table: list[int]
     rgba_by_extruder: list[str]
     filament_exist_by_extruder: list[bool]
+
+
+NO_LIVE_FILAMENT = LiveFilamentState(
+    extruder_map_table=[], rgba_by_extruder=[], filament_exist_by_extruder=[]
+)
 
 
 def is_loaded_rgba(rgba: Any) -> bool:

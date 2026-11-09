@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.3 (2026-11-09)
+
+- The preview shows the loaded colors only for the file being printed or paused. Every other file,
+  and every file between prints, now shows the colors it was sliced with, instead of colors taken
+  from whatever the last print had loaded.
+- When a print ends, its file goes back to its sliced colors.
+
 ## 0.1.2 (2026-08-16)
 
 U1 G-code Preview Colors is now a stable plugin. Before, it only showed up in the store if you had set your
