@@ -26,6 +26,7 @@ fi
 cd "$REPO_ROOT" || exit 1
 
 GCOL_DIR="$REPO_ROOT/u1-gcode-colors"
+TOP_COVER_DIR="$REPO_ROOT/u1-top-cover"
 
 echo ""
 echo "u1-extras gate"
@@ -37,6 +38,10 @@ run_check "ruff (u1-gcode-colors)"    ruff_in_dir "$GCOL_DIR" files tests
 # The moonraker component shell imports moonraker, so it is ruff-only; the pure mapping module
 # carries the type coverage.
 run_check "mypy (u1-gcode-colors)"    mypy_in_dir "$GCOL_DIR" files/moonraker/gcode_preview_color_map.py
+
+run_check "pytest (u1-top-cover)"     pytest_in_dir "$TOP_COVER_DIR" tests
+run_check "ruff (u1-top-cover)"       ruff_in_dir "$TOP_COVER_DIR" files tests
+run_check "mypy (u1-top-cover)"       mypy_in_dir "$TOP_COVER_DIR" files/klipper/klippy/extras/u1_top_cover.py
 
 release_trigger_check "$REPO_ROOT"
 manifest_origin_check "$REPO_ROOT"

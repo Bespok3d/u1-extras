@@ -1,0 +1,53 @@
+{
+  "name": "u1-top-cover",
+  "title": "U1 Smart Top Cover",
+  "version": "0.1.0",
+  "author": "bespoked",
+  "min_daemon_version": "0.10.1",
+  "description": "Lets the Exhaust fan setting in Orca's filament profile drive the Snapmaker U1 top cover's exhaust fan. Orca sends it as M106 P3, which the stock U1 rejects; this plugin turns it into the top cover's exhaust speed. Every other fan command stays stock. An exhaust Orca left on turns off by itself after the print. No top cover: the command is ignored and the print goes on.",
+  "tagline": "Orca's exhaust fan setting drives the top cover's exhaust fan.",
+  "category": "printing",
+  "channel": "testing",
+  "printer_specific": true,
+  "source": "https://github.com/Bespok3d/u1-extras",
+  "changelog": "doc/CHANGELOG.md",
+  "published_at": "2026-11-21",
+  "updated_at": "2026-11-21",
+  "publisher": "PLACEHOLDER",
+  "provides": [
+    {
+      "service": "u1-top-cover"
+    }
+  ],
+  "require": [],
+  "conflicts": [],
+  "requires": {
+    "capabilities": [
+      "klipper-generic"
+    ]
+  },
+  "permissions": [
+    "klipper-extra",
+    "klipper-config",
+    "restart"
+  ],
+  "install": {
+    "place": [
+      {
+        "class": "klipper-extra",
+        "src": "files/klipper/klippy/extras/u1_top_cover.py"
+      },
+      {
+        "class": "klipper-config",
+        "src": "files/cfg/klipper/u1-top-cover.cfg"
+      }
+    ],
+    "restart": [
+      "klipper"
+    ]
+  },
+  "conflict_resolutions": [],
+  "files": [],
+  "license": "https://github.com/Bespok3d/u1-extras/blob/dev/u1-top-cover/doc/LICENSE",
+  "attributions": "# Attributions - u1-top-cover\n\n**Plugin author:** Bespok3d\n\nLets the slicer's exhaust fan setting drive the Snapmaker U1 top cover's exhaust fan.\n\nNo third-party code ships in this package.\n"
+}

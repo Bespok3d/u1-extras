@@ -13,7 +13,7 @@ If you are a non-Claude tool, `AGENTS.md` points you here.
 
 u1-extras is a co-repo of optional Bespok3d add-ons for the Snapmaker U1 (and Klipper printers), each
 installable on its own from the store: a grab-bag of server-side extras and small U1 niceties for LED
-control, push notifications, monitoring, handy system utilities, and G-code preview polish.
+control, push notifications, monitoring, handy system utilities, G-code preview polish, and a smart top cover.
 
 Plugins:
 
@@ -24,9 +24,12 @@ Plugins:
 - **system-utils**: Static arm64 CLI utilities (curl, rsync).
 - **u1-gcode-colors**: Color Fluidd's G-code preview by the filament actually loaded on each tool's
   extruder (U1-only).
+- **u1-top-cover**: Let Orca's exhaust fan setting (M106 P3) drive the Snapmaker top cover's exhaust
+  fan (U1-only).
 
 Most of these plugins are Klipper/Moonraker config, patches, and shell/binary assets only; u1-gcode-colors
-carries Python (a Moonraker component and a pure mapping module).
+carries Python (a Moonraker component and a pure mapping module), and u1-top-cover carries Python (a
+Klipper extra).
 
 Read `README.md` for the repo's layout, build, and release mechanics before you change anything.
 

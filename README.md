@@ -7,7 +7,7 @@
 
 A co-repo of optional Bespok3d add-ons for the Snapmaker U1 (and Klipper printers), each installable
 on its own from the store. A grab-bag of server-side extras and small U1 niceties: LED control, push
-notifications, monitoring, handy system utilities, and G-code preview polish.
+notifications, monitoring, handy system utilities, G-code preview polish, and a smart top cover.
 
 Plugins:
 
@@ -17,6 +17,7 @@ Plugins:
 - **prometheus-exporter** - A Prometheus metrics exporter (CI-built binary).
 - **system-utils** - Static arm64 CLI utilities (curl, rsync).
 - **u1-gcode-colors** - Color Fluidd's G-code preview by the filament actually loaded on each tool's extruder (U1-only).
+- **u1-top-cover** - Let Orca's exhaust fan setting (M106 P3) drive the Snapmaker top cover's exhaust fan (U1-only).
 
 (panda-breath and OctoEverywhere have moved to their own repos: `plugins/panda-breath-plugin` and
 `plugins/octoeverywhere-plugin`.)
@@ -150,7 +151,7 @@ the individual authors named above.
 
 ## Support this project
 
-`u1-gcode-colors` are Bespok3d's own work. `moonraker-notify`,
+`u1-gcode-colors` and `u1-top-cover` are Bespok3d's own work. `moonraker-notify`,
 `wled`, `klipper-hooks`, `prometheus-exporter` and `system-utils` package software written by other people, and a donation
 here is not a donation to them.
 
