@@ -169,7 +169,7 @@ def test_the_alarm_stays_above_the_target_at_every_level(fan_level, softening_te
 
 def test_an_update_from_before_the_fan_level_gets_the_default_level():
     # The daemon applies a variable's default only when it is not required; a required one with
-    # no stored value refuses the update from 0.1.0, which had no fan level.
+    # no stored value refuses to update a dev install made before the fan level existed.
     manifest = json.loads(MANIFEST_PATH.read_text())
     fan_level_variable = next(
         variable for variable in manifest["requires"]["variables"]
