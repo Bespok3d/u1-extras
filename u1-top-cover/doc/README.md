@@ -20,7 +20,7 @@ fan runs at the speed you set in the slicer.
 - For PLA, PETG and TPU, the chamber is cooled to suit the lowest softening temperature of the
   materials the print uses, instead of the stock fixed 42 C. You pick how hard the fans work with
   **Fan level** (see below).
-- One setting, **Fan level**, in the plugin's **Config** tab. 0.5 is the default. Everything else
+- One setting, **Fan level**, in the plugin's **Config** tab. **Balanced** is the default. Everything else
   works as soon as it is installed.
 
 ## How to use it
@@ -42,7 +42,7 @@ material. The plugin reads the softening temperature of each material the print 
 lowest, and cools the chamber to a little below it. A spool that is loaded but not used is
 ignored. ABS and ASA prints keep the chamber warm, as stock.
 
-1. Open the plugin's **Config** tab and pick a **Fan level**. 0.5 is the default.
+1. Open the plugin's **Config** tab and pick a **Fan level**. **Balanced** is the default.
 2. Print as usual. The slicer writes each material's softening temperature into the print file;
    in Orca it is **Softening temperature** in the filament profile.
 
@@ -50,15 +50,15 @@ T is the lowest softening temperature among the materials the print uses.
 
 | Fan level | Chamber target | Lowest exhaust speed | What you hear |
 | --- | --- | --- | --- |
-| 0 | T minus 15 C | 40 % | The exhaust runs all print, loudest. |
-| 0.25 | T minus 12 C | 25 % | Always on, a bit quieter. |
-| 0.5 | T minus 10 C | 15 % | Always on, quiet. |
-| 0.75 | T minus 7 C | 5 % | Barely audible, speeds up when the chamber warms. |
-| 1 | T minus 5 C | off | Silent until the chamber passes the target. |
+| Coolest chamber - loudest fan | T minus 15 C | 40 % | The exhaust runs all print, loudest. |
+| Cool chamber - louder fan | T minus 12 C | 25 % | Always on, a bit quieter. |
+| Balanced | T minus 10 C | 15 % | Always on, quiet. |
+| Warmer chamber - quieter fan | T minus 7 C | 5 % | Barely audible, speeds up when the chamber warms. |
+| Warmest chamber - quietest fan | T minus 5 C | off | Silent until the chamber passes the target. |
 
 At every level the alarm is T minus 2 C. Above the target, the exhaust speeds up to cool.
 
-Example, PLA with a softening temperature of 45 C, at level 0.5: target 35 C, alarm 43 C, lowest
+Example, PLA with a softening temperature of 45 C, at **Balanced**: target 35 C, alarm 43 C, lowest
 exhaust speed 15 %.
 
 No usable softening temperature in the print file? The stock cooling runs, and the console says so.
@@ -69,7 +69,7 @@ No usable softening temperature in the print file? The stock cooling runs, and t
   pauses. Stock puts the alarm at 48 C. With a low softening temperature it comes much lower: TPU
   at 30 C gives an alarm at 28 C. In a warm room the chamber may not get that cool, and the
   print pauses. For a material like that, check its softening temperature in the filament
-  profile, or pick a lower fan level.
+  profile, or pick a cooler fan level.
 - **The slicer's exhaust speed wins over the level's lowest speed.** With **Activate air
   filtration** ticked, the slicer's "During print" speed becomes the lowest exhaust speed.
 - **While a print file is loaded, a `SET_PURIFIER_MODE MODE=1` you type is changed too.** That includes a paused print and a print that failed. The plugin cannot
@@ -95,10 +95,10 @@ G-code.
 
 | Look for | What it means |
 | --- | --- |
-| `u1_top_cover: lowest softening temperature 45 C, fan level 0.5` | The plugin read the print file. |
+| `u1_top_cover: lowest softening temperature 45 C, fan level Balanced` | The plugin read the print file. |
 | `Purifier mode set to COOL CHAMBER` with `DESIRE_TEMP`, `ALARM_TEMP` and `FAN_SPEED` | These show the plugin's numbers, not 42 and 48. |
 | `u1_top_cover: no softening temperature for the used materials in the print file, the start G-code's cooling is kept` | The plugin could not get a softening temperature from the print file: none written, unreadable, or no material used. The stock 42 C cooling runs. |
-| `u1_top_cover: softening temperature 10 C is too low for fan level 0.5, the start G-code's cooling is kept` | The target would be 0 C or below, which turns the cooling off. The stock 42 C cooling runs. |
+| `u1_top_cover: softening temperature 10 C is too low for fan level Balanced, the start G-code's cooling is kept` | The target would be 0 C or below, which turns the cooling off. The stock 42 C cooling runs. |
 
 An ABS or ASA print, or a printer with no top cover, shows none of these lines.
 

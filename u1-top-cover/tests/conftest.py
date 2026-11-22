@@ -20,7 +20,7 @@ from klipper_fakes import (  # noqa: E402
     StockPurifierMode,
 )
 
-DEFAULT_FAN_LEVEL = "0.5"
+DEFAULT_FAN_LEVEL = "Balanced"
 
 
 class TopCoverBench:

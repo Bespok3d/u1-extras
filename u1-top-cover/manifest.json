@@ -28,9 +28,9 @@
     "variables": [
       {
         "name": "FAN_LEVEL",
-        "description": "Fan level, one of 0, 0.25, 0.5, 0.75, 1. 0 cools hardest and is loudest, 1 is quietest.",
+        "description": "Fan level, from Coolest chamber - loudest fan to Warmest chamber - quietest fan. Balanced sits in between.",
         "required": false,
-        "default": "0.5"
+        "default": "Balanced"
       }
     ]
   },
@@ -40,14 +40,14 @@
       "label": "Fan level",
       "type": "select",
       "options": [
-        "0",
-        "0.25",
-        "0.5",
-        "0.75",
-        "1"
+        "Coolest chamber - loudest fan",
+        "Cool chamber - louder fan",
+        "Balanced",
+        "Warmer chamber - quieter fan",
+        "Warmest chamber - quietest fan"
       ],
-      "default": "0.5",
-      "hint": "0 keeps the chamber coolest, with the exhaust always on and loudest. 1 is quietest: the chamber runs warmer, closer to the softening temperature, and the exhaust may stop. 0.5 sits in between.",
+      "default": "Balanced",
+      "hint": "For PLA, PETG and TPU: how cool the chamber is kept, against how loud the exhaust is. A cooler chamber keeps the exhaust always on and louder. A warmer chamber stays closer to the softening temperature, and the exhaust may stop.",
       "userEditable": true,
       "scope": "printer"
     }

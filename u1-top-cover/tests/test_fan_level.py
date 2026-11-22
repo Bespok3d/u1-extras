@@ -39,7 +39,7 @@ SLOT_COUNT_MISMATCH_FOOTER = (
 TOO_LOW_SOFTENING_TEMP_FOOTER = (
     "; filament used [mm] = 1200.0\n"
     "; temperature_vitrification = 10\n")
-LEVEL_HALF_PLA_PARAMS = {"DESIRE_TEMP": "35", "ALARM_TEMP": "43", "FAN_SPEED": "0.15"}
+BALANCED_PLA_PARAMS = {"DESIRE_TEMP": "35", "ALARM_TEMP": "43", "FAN_SPEED": "0.15"}
 
 
 def print_bench(make_bench, tmp_path, footer_text, **bench_state):
@@ -51,9 +51,9 @@ def test_cool_chamber_takes_its_targets_from_the_softening_temp(make_bench, tmp_
     bench = print_bench(make_bench, tmp_path, PLA_AND_UNUSED_TPU_FOOTER)
     bench.run_gcode(STOCK_COOL_CHAMBER)
     assert bench.handled_params == [
-        {"MODE": "1", "DELAY_OFF": "0", **LEVEL_HALF_PLA_PARAMS}]
+        {"MODE": "1", "DELAY_OFF": "0", **BALANCED_PLA_PARAMS}]
     assert bench.responses == [
-        "// u1_top_cover: lowest softening temperature 45 C, fan level 0.5"]
+        "// u1_top_cover: lowest softening temperature 45 C, fan level Balanced"]
 
 
 def test_the_rewritten_commandline_carries_the_new_targets(make_bench, tmp_path):
@@ -79,11 +79,15 @@ def test_the_footer_is_found_after_a_long_print_body(make_bench, tmp_path):
 
 
 @pytest.mark.parametrize(("fan_level", "level_params"), [
-    ("0", {"DESIRE_TEMP": "30", "ALARM_TEMP": "43", "FAN_SPEED": "0.4"}),
-    ("0.25", {"DESIRE_TEMP": "33", "ALARM_TEMP": "43", "FAN_SPEED": "0.25"}),
-    ("0.5", LEVEL_HALF_PLA_PARAMS),
-    ("0.75", {"DESIRE_TEMP": "38", "ALARM_TEMP": "43", "FAN_SPEED": "0.05"}),
-    ("1", {"DESIRE_TEMP": "40", "ALARM_TEMP": "43", "FAN_SPEED": "0"}),
+    ("Coolest chamber - loudest fan",
+     {"DESIRE_TEMP": "30", "ALARM_TEMP": "43", "FAN_SPEED": "0.4"}),
+    ("Cool chamber - louder fan",
+     {"DESIRE_TEMP": "33", "ALARM_TEMP": "43", "FAN_SPEED": "0.25"}),
+    ("Balanced", BALANCED_PLA_PARAMS),
+    ("Warmer chamber - quieter fan",
+     {"DESIRE_TEMP": "38", "ALARM_TEMP": "43", "FAN_SPEED": "0.05"}),
+    ("Warmest chamber - quietest fan",
+     {"DESIRE_TEMP": "40", "ALARM_TEMP": "43", "FAN_SPEED": "0"}),
 ])
 def test_each_fan_level_sets_its_targets(make_bench, tmp_path, fan_level, level_params):
     bench = print_bench(make_bench, tmp_path, PLA_AND_UNUSED_TPU_FOOTER, fan_level=fan_level)
@@ -130,7 +134,7 @@ def test_a_softening_temp_with_no_target_left_keeps_the_stock_targets_and_says_s
     bench = print_bench(make_bench, tmp_path, TOO_LOW_SOFTENING_TEMP_FOOTER)
     bench.run_gcode(STOCK_COOL_CHAMBER)
     assert bench.stock_purifier_mode.handled_commandlines == [STOCK_COOL_CHAMBER]
-    assert bench.responses == ["// " + u1_top_cover_fan_level.too_low_notice(10., "0.5")]
+    assert bench.responses == ["// " + u1_top_cover_fan_level.too_low_notice(10., "Balanced")]
 
 
 def test_a_vanished_print_file_keeps_the_stock_targets_and_says_so(make_bench, tmp_path):
@@ -145,6 +149,21 @@ def test_connect_without_a_stock_set_purifier_mode_is_a_config_error():
     bench.printer.gcode.register_command("SET_PURIFIER_MODE", None)
     with pytest.raises(ConfigError):
         bench.connect()
+
+
+@pytest.mark.parametrize(
+    ("stored_number", "fan_level_name"),
+    u1_top_cover_fan_level.FAN_LEVEL_NAMES_BY_NUMBER.items())
+def test_a_number_stored_before_the_names_keeps_its_level(
+        make_bench, tmp_path, stored_number, fan_level_name):
+    named_bench = print_bench(
+        make_bench, tmp_path, PLA_AND_UNUSED_TPU_FOOTER, fan_level=fan_level_name)
+    numbered_bench = print_bench(
+        make_bench, tmp_path, PLA_AND_UNUSED_TPU_FOOTER, fan_level=stored_number)
+    named_bench.run_gcode(STOCK_COOL_CHAMBER)
+    numbered_bench.run_gcode(STOCK_COOL_CHAMBER)
+    assert numbered_bench.handled_params == named_bench.handled_params
+    assert numbered_bench.responses == named_bench.responses
 
 
 def test_an_unknown_fan_level_is_a_config_error():
@@ -175,4 +194,4 @@ def test_an_update_from_before_the_fan_level_gets_the_default_level():
         variable for variable in manifest["requires"]["variables"]
         if variable["name"] == "FAN_LEVEL")
     assert fan_level_variable["required"] is False
-    assert fan_level_variable["default"] == "0.5"
+    assert fan_level_variable["default"] == "Balanced"

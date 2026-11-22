@@ -22,14 +22,25 @@ class FanLevel:
     lowest_fan_speed: float
 
 
-# Keyed by the value the Config tab writes into the cfg; level 0 cools hardest, level 1 is quietest.
+# Keyed by the name the Config tab shows and writes into the cfg, coolest and loudest first.
 FAN_LEVELS = {
-    "0": FanLevel(target_below_softening=15., lowest_fan_speed=.40),
-    "0.25": FanLevel(target_below_softening=12., lowest_fan_speed=.25),
-    "0.5": FanLevel(target_below_softening=10., lowest_fan_speed=.15),
-    "0.75": FanLevel(target_below_softening=7., lowest_fan_speed=.05),
-    "1": FanLevel(target_below_softening=5., lowest_fan_speed=0.),
+    "Coolest chamber - loudest fan": FanLevel(target_below_softening=15., lowest_fan_speed=.40),
+    "Cool chamber - louder fan": FanLevel(target_below_softening=12., lowest_fan_speed=.25),
+    "Balanced": FanLevel(target_below_softening=10., lowest_fan_speed=.15),
+    "Warmer chamber - quieter fan": FanLevel(target_below_softening=7., lowest_fan_speed=.05),
+    "Warmest chamber - quietest fan": FanLevel(target_below_softening=5., lowest_fan_speed=0.),
 }
+# The Staging builds before the names stored a number; those printers keep their level.
+FAN_LEVEL_NAMES_BY_NUMBER = {
+    "0": "Coolest chamber - loudest fan",
+    "0.25": "Cool chamber - louder fan",
+    "0.5": "Balanced",
+    "0.75": "Warmer chamber - quieter fan",
+    "1": "Warmest chamber - quietest fan",
+}
+FAN_LEVEL_CHOICES = {
+    **FAN_LEVELS,
+    **{number: FAN_LEVELS[name] for number, name in FAN_LEVEL_NAMES_BY_NUMBER.items()}}
 
 NOTICE_PREFIX = "u1_top_cover: "
 STOCK_COOLING_KEPT = "the start G-code's cooling is kept"
@@ -96,8 +107,9 @@ class FanLevelCooling:
         self.gcode = self.printer.lookup_object("gcode")
         self.reactor = self.printer.get_reactor()
         self.purifier: Any = None
-        self.fan_level_name = config.get("fan_level")
-        self.fan_level = config.getchoice("fan_level", FAN_LEVELS)
+        self.fan_level = config.getchoice("fan_level", FAN_LEVEL_CHOICES)
+        stored_fan_level = config.get("fan_level")
+        self.fan_level_name = FAN_LEVEL_NAMES_BY_NUMBER.get(stored_fan_level, stored_fan_level)
         self.stock_set_purifier_mode: Any = None
         self.printer.register_event_handler("klippy:connect", self._handle_connect)
 

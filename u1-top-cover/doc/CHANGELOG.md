@@ -8,9 +8,9 @@
 - When a print ends, is cancelled or fails, the exhaust turns off by itself. A finished print
   first runs Orca's "complete print" exhaust speed.
 - A printer with no top cover ignores the command, says so once, and keeps printing.
-- **Fan level** setting in the Config tab: 0, 0.25, 0.5, 0.75 or 1. For PLA, PETG and TPU, the
-  chamber is cooled to suit the lowest softening temperature of the materials the print uses,
-  instead of the stock fixed 42 C. 0 cools hardest and is loudest, 1 is quietest. The default is
-  0.5.
+- **Fan level** setting in the Config tab, from "Coolest chamber - loudest fan" to "Warmest
+  chamber - quietest fan". For PLA, PETG and TPU, the chamber is cooled to suit the lowest
+  softening temperature of the materials the print uses, instead of the stock fixed 42 C. The
+  default is "Balanced".
 - A print file with no usable softening temperature keeps the stock cooling, and the console says
   so.
