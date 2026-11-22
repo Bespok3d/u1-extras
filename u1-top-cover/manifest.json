@@ -1,7 +1,7 @@
 {
   "name": "u1-top-cover",
   "title": "U1 Smart Top Cover",
-  "version": "0.2.0",
+  "version": "0.2.0-pre",
   "author": "bespoked",
   "min_daemon_version": "0.10.1",
   "description": "Lets the Exhaust fan setting in Orca's filament profile drive the Snapmaker U1 top cover's exhaust fan. Orca sends it as M106 P3, which the stock U1 rejects; this plugin turns it into the top cover's exhaust speed. Every other fan command stays stock. An exhaust Orca left on turns off by itself after the print. For PLA, PETG and TPU, the Fan level setting cools the chamber to suit the lowest softening temperature of the materials the print uses, instead of the stock fixed 42 C. No top cover: the command is ignored and the print goes on.",
