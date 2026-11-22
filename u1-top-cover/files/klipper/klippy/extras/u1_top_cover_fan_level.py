@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: Copyright (C) 2026 unlucio and the Bespok3d contributors
 # SPDX-License-Identifier: GPL-3.0-only
-"""Chamber cooling targets from the print's softening temperature and the chosen fan level."""
+"""The fan level: the cool chamber targets from the print's softening temperature and the level."""
 
 import os
 import pathlib
@@ -31,7 +31,7 @@ FAN_LEVELS = {
     "1": FanLevel(target_below_softening=5., lowest_fan_speed=0.),
 }
 
-NOTICE_PREFIX = "u1_chamber_cooling: "
+NOTICE_PREFIX = "u1_top_cover: "
 STOCK_COOLING_KEPT = "the start G-code's cooling is kept"
 NO_SOFTENING_TEMP_NOTICE = (
     f"{NOTICE_PREFIX}no softening temperature for the used materials in the print file,"
@@ -88,12 +88,14 @@ def read_footer(print_file_path: str) -> str:
         return print_file.read().decode("utf-8", errors="replace")
 
 
-class U1ChamberCooling:
+class FanLevelCooling:
     """Wraps the stock SET_PURIFIER_MODE and rewrites its cool chamber targets."""
 
     def __init__(self, config: Any) -> None:
         self.printer = config.get_printer()
         self.gcode = self.printer.lookup_object("gcode")
+        self.reactor = self.printer.get_reactor()
+        self.purifier: Any = None
         self.fan_level_name = config.get("fan_level")
         self.fan_level = config.getchoice("fan_level", FAN_LEVELS)
         self.stock_set_purifier_mode: Any = None
@@ -102,6 +104,7 @@ class U1ChamberCooling:
     def _handle_connect(self) -> None:
         # Swapping the handler at connect is what gcode_macro's rename_existing does: every
         # section has registered its commands by then, so purifier.py's command exists.
+        self.purifier = self.printer.lookup_object("purifier")
         self.stock_set_purifier_mode = self.gcode.register_command("SET_PURIFIER_MODE", None)
         if self.stock_set_purifier_mode is None:
             raise self.printer.config_error(
@@ -110,6 +113,10 @@ class U1ChamberCooling:
 
     def cmd_SET_PURIFIER_MODE(self, gcmd: Any) -> None:  # noqa: N802 - Klipper's cmd_<COMMAND> naming
         if gcmd.get_int("MODE", None) != PURIFIER_MODE_COOL_CHAMBER:
+            self.stock_set_purifier_mode(gcmd)
+            return
+        if not self._top_cover_present():
+            # The stock command reports the missing top cover itself.
             self.stock_set_purifier_mode(gcmd)
             return
         print_file_path = self._print_file_path()
@@ -150,6 +157,11 @@ class U1ChamberCooling:
         return self.gcode.create_gcode_command(
             gcmd.get_command(), rewritten_commandline, rewritten_params)
 
+    def _top_cover_present(self) -> bool:
+        purifier_status = self.purifier.get_status(self.reactor.monotonic())
+        top_cover_present: bool = purifier_status["power_detected"]
+        return top_cover_present
+
     def _print_file_path(self) -> str | None:
         """The file the printer is printing, or None with no print loaded."""
         virtual_sdcard = self.printer.lookup_object("virtual_sdcard", None)
@@ -157,7 +169,3 @@ class U1ChamberCooling:
             return None
         print_file_path: str | None = virtual_sdcard.file_path()
         return print_file_path
-
-
-def load_config(config: Any) -> U1ChamberCooling:
-    return U1ChamberCooling(config)

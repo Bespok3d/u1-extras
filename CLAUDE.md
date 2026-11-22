@@ -25,13 +25,12 @@ Plugins:
 - **u1-gcode-colors**: Color Fluidd's G-code preview by the filament actually loaded on each tool's
   extruder (U1-only).
 - **u1-top-cover**: Let Orca's exhaust fan setting (M106 P3) drive the Snapmaker top cover's exhaust
-  fan (U1-only).
-- **u1-chamber-cooling**: Cool the chamber to suit the materials' softening temperature, at the fan
-  level you pick (U1-only).
+  fan, and cool the chamber to suit the materials' softening temperature at the fan level you pick
+  (U1-only).
 
 Most of these plugins are Klipper/Moonraker config, patches, and shell/binary assets only; u1-gcode-colors
-carries Python (a Moonraker component and a pure mapping module), and u1-top-cover and u1-chamber-cooling
-each carry Python (a Klipper extra).
+carries Python (a Moonraker component and a pure mapping module), and u1-top-cover
+carries Python (Klipper extras).
 
 Read `README.md` for the repo's layout, build, and release mechanics before you change anything.
 

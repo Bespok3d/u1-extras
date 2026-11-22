@@ -27,7 +27,7 @@ cd "$REPO_ROOT" || exit 1
 
 GCOL_DIR="$REPO_ROOT/u1-gcode-colors"
 TOP_COVER_DIR="$REPO_ROOT/u1-top-cover"
-CHAMBER_COOLING_DIR="$REPO_ROOT/u1-chamber-cooling"
+TOP_COVER_EXTRAS="files/klipper/klippy/extras"
 
 echo ""
 echo "u1-extras gate"
@@ -42,10 +42,13 @@ run_check "mypy (u1-gcode-colors)"    mypy_in_dir "$GCOL_DIR" files/moonraker/gc
 
 run_check "pytest (u1-top-cover)"     pytest_in_dir "$TOP_COVER_DIR" tests
 run_check "ruff (u1-top-cover)"       ruff_in_dir "$TOP_COVER_DIR" files tests
-run_check "mypy (u1-top-cover)"       mypy_in_dir "$TOP_COVER_DIR" files/klipper/klippy/extras/u1_top_cover.py
-run_check "pytest (u1-chamber-cooling)" pytest_in_dir "$CHAMBER_COOLING_DIR" tests
-run_check "ruff (u1-chamber-cooling)"   ruff_in_dir "$CHAMBER_COOLING_DIR" files tests
-run_check "mypy (u1-chamber-cooling)"   mypy_in_dir "$CHAMBER_COOLING_DIR" files/klipper/klippy/extras/u1_chamber_cooling.py
+# u1_top_cover.py relatively imports its u1_top_cover_fan_level sibling (from . import ...), which
+# resolves at runtime as a klippy.extras package member; mypy needs klippy/ on MYPYPATH plus explicit
+# package bases to see it the same way.
+export MYPYPATH="$TOP_COVER_DIR/files/klipper/klippy"
+run_check "mypy (u1-top-cover)"       mypy_in_dir "$TOP_COVER_DIR" --explicit-package-bases \
+    --namespace-packages "$TOP_COVER_EXTRAS/u1_top_cover_fan_level.py" "$TOP_COVER_EXTRAS/u1_top_cover.py"
+unset MYPYPATH
 
 release_trigger_check "$REPO_ROOT"
 manifest_origin_check "$REPO_ROOT"

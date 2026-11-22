@@ -1,6 +1,7 @@
 # U1 Smart Top Cover
 
-Lets your slicer run the exhaust fan of the Snapmaker U1 top cover.
+Lets your slicer run the exhaust fan of the Snapmaker U1 top cover, and cools the chamber to suit
+the materials you print.
 
 Orca and Snapmaker Orca have an exhaust fan setting in every filament profile. On a stock U1 that
 setting does nothing: the printer answers "Unsupported fan ID: 3". With this plugin, the exhaust
@@ -16,7 +17,11 @@ fan runs at the speed you set in the slicer.
   top cover.
 - When the printer keeps the chamber warm (for ABS or ASA), the exhaust stays off, as it should.
   The slicer's exhaust speed is skipped then.
-- Nothing to set up. Install it and the slicer setting works.
+- For PLA, PETG and TPU, the chamber is cooled to suit the lowest softening temperature of the
+  materials the print uses, instead of the stock fixed 42 C. You pick how hard the fans work with
+  **Fan level** (see below).
+- One setting, **Fan level**, in the plugin's **Config** tab. 0.5 is the default. Everything else
+  works as soon as it is installed.
 
 ## How to use it
 
@@ -29,6 +34,48 @@ fan runs at the speed you set in the slicer.
 Snapmaker's own profiles have this off for PLA, PETG and TPU, and on for ABS and ASA. For ABS
 and ASA the start G-code keeps the chamber warm, so the exhaust stays off while printing. The
 "Complete print" speed still runs after the print ends.
+
+## Fan level
+
+For PLA, PETG and TPU, the stock start G-code cools the chamber to a fixed 42 C, whatever the
+material. The plugin reads the softening temperature of each material the print uses, takes the
+lowest, and cools the chamber to a little below it. A spool that is loaded but not used is
+ignored. ABS and ASA prints keep the chamber warm, as stock.
+
+1. Open the plugin's **Config** tab and pick a **Fan level**. 0.5 is the default.
+2. Print as usual. The slicer writes each material's softening temperature into the print file;
+   in Orca it is **Softening temperature** in the filament profile.
+
+T is the lowest softening temperature among the materials the print uses.
+
+| Fan level | Chamber target | Lowest exhaust speed | What you hear |
+| --- | --- | --- | --- |
+| 0 | T minus 15 C | 40 % | The exhaust runs all print, loudest. |
+| 0.25 | T minus 12 C | 25 % | Always on, a bit quieter. |
+| 0.5 | T minus 10 C | 15 % | Always on, quiet. |
+| 0.75 | T minus 7 C | 5 % | Barely audible, speeds up when the chamber warms. |
+| 1 | T minus 5 C | off | Silent until the chamber passes the target. |
+
+At every level the alarm is T minus 2 C. Above the target, the exhaust speeds up to cool.
+
+Example, PLA with a softening temperature of 45 C, at level 0.5: target 35 C, alarm 43 C, lowest
+exhaust speed 15 %.
+
+No usable softening temperature in the print file? The stock cooling runs, and the console says so.
+
+### Know this before you print
+
+- **The alarm pauses the print.** If the chamber stays above the alarm for 4 minutes, the printer
+  pauses. Stock puts the alarm at 48 C. With a low softening temperature it comes much lower: TPU
+  at 30 C gives an alarm at 28 C. In a warm room the chamber may not get that cool, and the
+  print pauses. For a material like that, check its softening temperature in the filament
+  profile, or pick a lower fan level.
+- **The slicer's exhaust speed wins over the level's lowest speed.** With **Activate air
+  filtration** ticked, the slicer's "During print" speed becomes the lowest exhaust speed.
+- **While a print file is loaded, a `SET_PURIFIER_MODE MODE=1` you type is changed too.** That includes a paused print and a print that failed. The plugin cannot
+  tell it from the start G-code's line, so its own numbers replace yours.
+- **Your filament profile decides.** The plugin uses the softening temperature the slicer wrote.
+  If a profile has a wrong value, the target is wrong too.
 
 ## Check that it works
 
@@ -43,10 +90,23 @@ Type these in the Fluidd console, with the printer idle and the top cover on.
 | `SET_PURIFIER_MODE MODE=0` | Puts the purifier back to idle. The circulator (inner fan) stops after its own delay, 180 seconds by default. |
 | `FIRMWARE_RESTART` | Puts back your saved exhaust turn-off delay. `MODE=3` set it to 0 until Klipper restarts. |
 
+For the fan level, start a PLA, PETG or TPU print and look at the Fluidd console during the start
+G-code.
+
+| Look for | What it means |
+| --- | --- |
+| `u1_top_cover: lowest softening temperature 45 C, fan level 0.5` | The plugin read the print file. |
+| `Purifier mode set to COOL CHAMBER` with `DESIRE_TEMP`, `ALARM_TEMP` and `FAN_SPEED` | These show the plugin's numbers, not 42 and 48. |
+| `u1_top_cover: no softening temperature for the used materials in the print file, the start G-code's cooling is kept` | The plugin could not get a softening temperature from the print file: none written, unreadable, or no material used. The stock 42 C cooling runs. |
+| `u1_top_cover: softening temperature 10 C is too low for fan level 0.5, the start G-code's cooling is kept` | The target would be 0 C or below, which turns the cooling off. The stock 42 C cooling runs. |
+
+An ABS or ASA print, or a printer with no top cover, shows none of these lines.
+
 ## Requirements
 
 - A Snapmaker U1 on stock firmware.
 - The top cover, for the fan to run. The plugin loads without it.
+- For the fan level: print files sliced with Orca or Snapmaker Orca.
 
 ## For the curious: how it works
 
@@ -81,9 +141,23 @@ The start G-code sets the purifier mode with `SET_PURIFIER_MODE`. That mode deci
 A later `SET_PURIFIER_MODE` or `SET_PURIFIER` always wins over an earlier `M106 P3`: the last
 command sent sets the fan.
 
+### Fan level
+
+The plugin also takes over `SET_PURIFIER_MODE` and changes only `MODE=1`, the cool chamber mode.
+It replaces `DESIRE_TEMP`, `ALARM_TEMP` and `FAN_SPEED`, keeps every other parameter, and hands
+the command to the stock purifier. Every other mode goes to the stock command unchanged.
+
+It reads the end of the print file for two lines the slicer writes:
+
+- `; filament used [mm] = ...`: a material counts when its length is above 0.
+- `; temperature_vitrification = ...`: the softening temperature of each material.
+
+A `SET_PURIFIER_MODE MODE=1` typed in the console with no print file loaded goes to the stock
+command unchanged.
+
 ### What it does not do
 
 - It does not touch any other fan, nor the purifier's inner fan.
-- It does not change the stock purifier, the start G-code or the end G-code.
+- It does not change the stock purifier, the start G-code or the end G-code files.
 - After a power-loss resume, the exhaust stays as the resume sets it until the slicer's next
   `M106 P3`.

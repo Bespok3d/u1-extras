@@ -4,8 +4,8 @@ import json
 import pathlib
 
 import pytest
-from conftest import ChamberCoolingBench, write_print_file
-from extras import u1_chamber_cooling
+from conftest import TopCoverBench, write_print_file
+from extras import u1_top_cover_fan_level
 from klipper_fakes import ConfigError
 
 MANIFEST_PATH = pathlib.Path(__file__).resolve().parent.parent / "manifest.json"
@@ -53,7 +53,7 @@ def test_cool_chamber_takes_its_targets_from_the_softening_temp(make_bench, tmp_
     assert bench.handled_params == [
         {"MODE": "1", "DELAY_OFF": "0", **LEVEL_HALF_PLA_PARAMS}]
     assert bench.responses == [
-        "// u1_chamber_cooling: lowest softening temperature 45 C, fan level 0.5"]
+        "// u1_top_cover: lowest softening temperature 45 C, fan level 0.5"]
 
 
 def test_the_rewritten_commandline_carries_the_new_targets(make_bench, tmp_path):
@@ -72,7 +72,7 @@ def test_the_lowest_used_softening_temp_wins(make_bench, tmp_path):
 def test_the_footer_is_found_after_a_long_print_body(make_bench, tmp_path):
     print_file_path = write_print_file(
         tmp_path / "print.gcode", PLA_AND_UNUSED_TPU_FOOTER,
-        filler_bytes=2 * u1_chamber_cooling.FOOTER_READ_BYTES)
+        filler_bytes=2 * u1_top_cover_fan_level.FOOTER_READ_BYTES)
     bench = make_bench(print_file_path=print_file_path)
     bench.run_gcode(STOCK_COOL_CHAMBER)
     assert bench.handled_params[0]["DESIRE_TEMP"] == "35"
@@ -99,6 +99,13 @@ def test_every_other_mode_goes_to_the_stock_command_unchanged(make_bench, tmp_pa
     assert bench.responses == []
 
 
+def test_no_top_cover_goes_to_the_stock_command_unchanged(make_bench, tmp_path):
+    bench = print_bench(make_bench, tmp_path, PLA_AND_UNUSED_TPU_FOOTER, power_detected=False)
+    bench.run_gcode(STOCK_COOL_CHAMBER)
+    assert bench.stock_purifier_mode.handled_commandlines == [STOCK_COOL_CHAMBER]
+    assert bench.responses == []
+
+
 def test_no_print_file_keeps_the_stock_targets(make_bench):
     bench = make_bench()
     bench.run_gcode(STOCK_COOL_CHAMBER)
@@ -115,7 +122,7 @@ def test_no_usable_softening_temp_keeps_the_stock_targets_and_says_so(
     bench = print_bench(make_bench, tmp_path, footer_text)
     bench.run_gcode(STOCK_COOL_CHAMBER)
     assert bench.stock_purifier_mode.handled_commandlines == [STOCK_COOL_CHAMBER]
-    assert bench.responses == ["// " + u1_chamber_cooling.NO_SOFTENING_TEMP_NOTICE]
+    assert bench.responses == ["// " + u1_top_cover_fan_level.NO_SOFTENING_TEMP_NOTICE]
 
 
 def test_a_softening_temp_with_no_target_left_keeps_the_stock_targets_and_says_so(
@@ -123,18 +130,18 @@ def test_a_softening_temp_with_no_target_left_keeps_the_stock_targets_and_says_s
     bench = print_bench(make_bench, tmp_path, TOO_LOW_SOFTENING_TEMP_FOOTER)
     bench.run_gcode(STOCK_COOL_CHAMBER)
     assert bench.stock_purifier_mode.handled_commandlines == [STOCK_COOL_CHAMBER]
-    assert bench.responses == ["// " + u1_chamber_cooling.too_low_notice(10., "0.5")]
+    assert bench.responses == ["// " + u1_top_cover_fan_level.too_low_notice(10., "0.5")]
 
 
 def test_a_vanished_print_file_keeps_the_stock_targets_and_says_so(make_bench, tmp_path):
     bench = make_bench(print_file_path=str(tmp_path / "deleted.gcode"))
     bench.run_gcode(STOCK_COOL_CHAMBER)
     assert bench.stock_purifier_mode.handled_commandlines == [STOCK_COOL_CHAMBER]
-    assert bench.responses == ["// " + u1_chamber_cooling.NO_SOFTENING_TEMP_NOTICE]
+    assert bench.responses == ["// " + u1_top_cover_fan_level.NO_SOFTENING_TEMP_NOTICE]
 
 
 def test_connect_without_a_stock_set_purifier_mode_is_a_config_error():
-    bench = ChamberCoolingBench()
+    bench = TopCoverBench()
     bench.printer.gcode.register_command("SET_PURIFIER_MODE", None)
     with pytest.raises(ConfigError):
         bench.connect()
@@ -142,19 +149,30 @@ def test_connect_without_a_stock_set_purifier_mode_is_a_config_error():
 
 def test_an_unknown_fan_level_is_a_config_error():
     with pytest.raises(ConfigError):
-        ChamberCoolingBench(fan_level="2")
+        TopCoverBench(fan_level="2")
 
 
 def test_the_config_tab_offers_exactly_the_plugin_fan_levels():
     manifest = json.loads(MANIFEST_PATH.read_text())
     fan_level_field = next(field for field in manifest["config"] if field["key"] == "FAN_LEVEL")
-    assert fan_level_field["options"] == list(u1_chamber_cooling.FAN_LEVELS)
-    assert fan_level_field["default"] in u1_chamber_cooling.FAN_LEVELS
+    assert fan_level_field["options"] == list(u1_top_cover_fan_level.FAN_LEVELS)
+    assert fan_level_field["default"] in u1_top_cover_fan_level.FAN_LEVELS
 
 
-@pytest.mark.parametrize("fan_level", u1_chamber_cooling.FAN_LEVELS.values())
+@pytest.mark.parametrize("fan_level", u1_top_cover_fan_level.FAN_LEVELS.values())
 @pytest.mark.parametrize("softening_temp", [30., 45., 70.])
 def test_the_alarm_stays_above_the_target_at_every_level(fan_level, softening_temp):
     # purifier.py lifts an alarm below target + 1 up to target + 1; staying above keeps ours.
-    targets = u1_chamber_cooling.cool_chamber_targets(softening_temp, fan_level)
+    targets = u1_top_cover_fan_level.cool_chamber_targets(softening_temp, fan_level)
     assert float(targets["ALARM_TEMP"]) >= float(targets["DESIRE_TEMP"]) + 1
+
+
+def test_an_update_from_before_the_fan_level_gets_the_default_level():
+    # The daemon applies a variable's default only when it is not required; a required one with
+    # no stored value refuses the update from 0.1.0, which had no fan level.
+    manifest = json.loads(MANIFEST_PATH.read_text())
+    fan_level_variable = next(
+        variable for variable in manifest["requires"]["variables"]
+        if variable["name"] == "FAN_LEVEL")
+    assert fan_level_variable["required"] is False
+    assert fan_level_variable["default"] == "0.5"

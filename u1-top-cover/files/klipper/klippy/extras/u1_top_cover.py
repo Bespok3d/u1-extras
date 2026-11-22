@@ -4,12 +4,14 @@
 
 from typing import Any
 
+from . import u1_top_cover_fan_level
+
 EXHAUST_FAN_ID = 3
 FULL_SPEED_S_VALUE = 255.
 FULL_SPEED = 1.
 # The purifier modes, as Snapmaker's extras/purifier.py numbers them.
 PURIFIER_MODE_IDLE = 0
-PURIFIER_MODE_COOL_CHAMBER = 1
+PURIFIER_MODE_COOL_CHAMBER = u1_top_cover_fan_level.PURIFIER_MODE_COOL_CHAMBER
 MODES_THE_SLICER_DRIVES = (PURIFIER_MODE_IDLE, PURIFIER_MODE_COOL_CHAMBER)
 # purifier.py switches the fan off at once for any delay below one second.
 SHORTEST_TURN_OFF_DELAY_SECONDS = 1
@@ -42,6 +44,7 @@ class U1TopCover:
         self.printer = config.get_printer()
         self.reactor = self.printer.get_reactor()
         self.gcode = self.printer.lookup_object("gcode")
+        self.fan_level_cooling = u1_top_cover_fan_level.FanLevelCooling(config)
         self.purifier: Any = None
         self.stock_m106: Any = None
         # The speed the purifier reported right after the slicer set it; None when the slicer

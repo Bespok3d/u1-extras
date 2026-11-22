@@ -21,12 +21,24 @@ class ConfigError(Exception):
 
 
 class FakeConfig:
-    def __init__(self, printer, section_name):
+    """One cfg section; getchoice raises on a value outside the choices, as configfile.py does."""
+
+    def __init__(self, printer, section_name, options):
         self.printer = printer
         self.section_name = section_name
+        self.options = options
 
     def get_printer(self):
         return self.printer
+
+    def get(self, option):
+        return self.options[option]
+
+    def getchoice(self, option, choices):
+        choice = self.options[option]
+        if choice not in choices:
+            raise ConfigError(f"Choice '{choice}' for option '{option}' is not a valid choice")
+        return choices[choice]
 
 
 class FakeTimer:
@@ -71,10 +83,20 @@ class FakeReactor:
 
 
 class FakeGCodeCommand:
-    def __init__(self, gcode, commandline, params):
+    def __init__(self, gcode, command, commandline, params):
         self.gcode = gcode
+        self.command = command
         self.commandline = commandline
         self.params = params
+
+    def get_command(self):
+        return self.command
+
+    def get_commandline(self):
+        return self.commandline
+
+    def get_command_parameters(self):
+        return self.params
 
     def get(self, name, default, parser=str, minval=None):
         raw_value = self.params.get(name)
@@ -96,10 +118,17 @@ class FakeGCodeCommand:
         self.gcode.respond_info(message)
 
 
+def is_traditional_gcode(command_name):
+    """M106 takes letter parameters, SET_PURIFIER_MODE takes NAME=value ones, as gcode.py splits."""
+    return command_name[0].isupper() and command_name[1].isdigit()
+
+
 def parse_commandline(commandline):
-    """Split "M106 P3 S178" into a command name and its letter parameters."""
+    """Split "M106 P3 S178" or "SET_PURIFIER_MODE MODE=1" into a command name and its parameters."""
     command_name, *words = commandline.split()
-    return command_name, {word[0]: word[1:] for word in words}
+    if is_traditional_gcode(command_name):
+        return command_name, {word[0]: word[1:] for word in words}
+    return command_name, dict(word.upper().split("=", 1) for word in words)
 
 
 class FakeGCode:
@@ -115,9 +144,13 @@ class FakeGCode:
         self.ready_gcode_handlers[cmd] = func
         return None
 
+    def create_gcode_command(self, command, commandline, params):
+        return FakeGCodeCommand(self, command, commandline, params)
+
     def run(self, commandline):
         command_name, params = parse_commandline(commandline)
-        self.ready_gcode_handlers[command_name](FakeGCodeCommand(self, commandline, params))
+        gcmd = self.create_gcode_command(command_name, commandline, params)
+        self.ready_gcode_handlers[command_name](gcmd)
 
     def respond_info(self, message):
         self.responses.append("// " + message)
@@ -132,6 +165,27 @@ class StockFan:
 
     def cmd_M106(self, gcmd):  # noqa: N802 - Klipper's cmd_<COMMAND> naming
         self.handled_commandlines.append(gcmd.commandline)
+
+
+class StockPurifierMode:
+    """purifier.py's SET_PURIFIER_MODE, recording the parameters it was handed."""
+
+    def __init__(self, gcode):
+        self.handled_params = []
+        self.handled_commandlines = []
+        gcode.register_command("SET_PURIFIER_MODE", self.cmd_SET_PURIFIER_MODE)
+
+    def cmd_SET_PURIFIER_MODE(self, gcmd):  # noqa: N802 - Klipper's cmd_<COMMAND> naming
+        self.handled_params.append(dict(gcmd.get_command_parameters()))
+        self.handled_commandlines.append(gcmd.get_commandline())
+
+
+class FakeVirtualSdcard:
+    def __init__(self, print_file_path):
+        self.print_file_path = print_file_path
+
+    def file_path(self):
+        return self.print_file_path
 
 
 class FakePurifier:
@@ -193,8 +247,8 @@ class FakePrinter:
         self.objects = {"gcode": self.gcode}
         self.shut_down = False
 
-    def config_for(self, section_name):
-        return FakeConfig(self, section_name)
+    def config_for(self, section_name, options):
+        return FakeConfig(self, section_name, options)
 
     def get_reactor(self):
         return self.reactor
@@ -202,8 +256,12 @@ class FakePrinter:
     def is_shutdown(self):
         return self.shut_down
 
-    def lookup_object(self, name):
-        return self.objects[name]
+    def lookup_object(self, name, default=ConfigError):
+        if name in self.objects:
+            return self.objects[name]
+        if default is ConfigError:
+            raise ConfigError(f"Unknown config object '{name}'")
+        return default
 
     def register_event_handler(self, event, callback):
         self.event_handlers.setdefault(event, []).append(callback)
