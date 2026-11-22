@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: GPL-3.0-only
 """Orca's exhaust fan command, M106 P3, drives the Snapmaker U1 top cover's exhaust fan."""
 
-import logging
 from typing import Any
 
 EXHAUST_FAN_ID = 3
@@ -37,7 +36,7 @@ def complete_print_run_seconds(stored_delay_seconds: int) -> int:
 
 
 class U1TopCover:
-    """Wraps the stock M106 and remembers whether the slicer left the exhaust on."""
+    """Wraps the stock M106 and remembers the exhaust speed the slicer left on."""
 
     def __init__(self, config: Any) -> None:
         self.printer = config.get_printer()
@@ -45,7 +44,11 @@ class U1TopCover:
         self.gcode = self.printer.lookup_object("gcode")
         self.purifier: Any = None
         self.stock_m106: Any = None
-        self.slicer_left_exhaust_on = False
+        # The speed the purifier reported right after the slicer set it; None when the slicer
+        # left the exhaust off.
+        self.slicer_exhaust_speed: float | None = None
+        # print_stats:stop also fires with no print running, on a cancel or an error while idle.
+        self.print_running = False
         self.notices_sent: set[str] = set()
         self.printer.register_event_handler("klippy:connect", self._handle_connect)
         self.printer.register_event_handler(
@@ -81,31 +84,44 @@ class U1TopCover:
             # The cooling loop never drops below this floor, so it can still speed up to cool
             # but never undercuts the slicer's speed.
             self.purifier.exhaust_fan_speed_threshold = speed
-        self.slicer_left_exhaust_on = speed > 0
-        if self.slicer_left_exhaust_on:
-            self.purifier.set_exhaust_fan_speed(speed)
-            return
-        self.purifier.set_exhaust_fan_delay_turn_off(purifier_status["exhaust_fan"]["delay"])
+        self.purifier.set_exhaust_fan_speed(speed)
+        self.slicer_exhaust_speed = self._print_owned_speed()
+
+    def _print_owned_speed(self) -> float | None:
+        """The speed the print's end turns off; None for an idle M106 P3 or a fan left off."""
+        reported_speed = self._reported_exhaust_speed()
+        if not self.print_running or reported_speed <= 0:
+            return None
+        return reported_speed
 
     def _handle_new_print(self) -> None:
-        # An M106 P3 typed before this print belongs to no print, so this print's end leaves it.
         # print_stats:start would be wrong here: it also fires on every resume.
-        self.slicer_left_exhaust_on = False
+        self.print_running = True
 
     def _handle_print_stop(self) -> None:
-        if not self.slicer_left_exhaust_on or self.printer.is_shutdown():
+        slicer_exhaust_speed = self.slicer_exhaust_speed
+        self.slicer_exhaust_speed = None
+        self.print_running = False
+        if slicer_exhaust_speed is None or self.printer.is_shutdown():
             return
-        self.slicer_left_exhaust_on = False
-        purifier_status = self.purifier.get_status(self.reactor.monotonic())
-        stored_delay_seconds = purifier_status["exhaust_fan"]["delay"]
+        if self._reported_exhaust_speed() != slicer_exhaust_speed:
+            # The screen, SET_PURIFIER or the cooling loop changed the fan last: theirs wins.
+            return
+        stored_delay_seconds = self._exhaust_status()["delay"]
         self.purifier.set_exhaust_fan_delay_turn_off(
             complete_print_run_seconds(stored_delay_seconds))
+
+    def _reported_exhaust_speed(self) -> float:
+        return float(self._exhaust_status()["speed"])
+
+    def _exhaust_status(self) -> Any:
+        return self.purifier.get_status(self.reactor.monotonic())["exhaust_fan"]
 
     def _notice_once(self, notice: str, gcmd: Any) -> None:
         if notice in self.notices_sent:
             return
         self.notices_sent.add(notice)
-        logging.info(notice)
+        # respond_info also writes the notice to klippy.log.
         gcmd.respond_info(notice)
 
 
